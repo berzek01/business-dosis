@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.WebApp.Requirement.RegisterMassiveRequirement
 // Assembly: SIIV.WebApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 7AA326CF-267A-4A0D-8292-415B064D285A
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.WebApp.dll
+// MVID: 0F87038C-530E-41EF-B2A6-8BD0592819DD
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.WebApp.dll
 
 using AjaxControlToolkit;
 using Newtonsoft.Json;
@@ -14,13 +14,10 @@ using SIIV.Requirement.BL;
 using SIIV.SystemParameter.BL;
 using SIIV.WebApp.Claim;
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -55,6 +52,8 @@ namespace SIIV.WebApp.Requirement
     private Button btnPreviousTemplate;
     private Button btnClaim;
     private Button btnCancelTemplate;
+    private int TypeService;
+    private int ProductServiceId;
     private double ComisionCanalAtencion = Convert.ToDouble(ConfigurationManager.AppSettings[nameof (ComisionCanalAtencion)]);
     private bool isRegisterCall = false;
     private int StatusCallCenter;
@@ -215,17 +214,16 @@ namespace SIIV.WebApp.Requirement
       this.btnFinishTemplate = this.GetControlFromWizard(this.Wizard1, RegisterMassiveRequirement.WizardNavigationTempContainer.FinishNavigationTemplateContainerID, "btnFinish") as Button;
       if (this.btnFinishTemplate.Text != "Grabar")
         this.gvList.Columns[0].Visible = true;
-      string str = systemUser1.i_RoleConfigId.ToString();
-      this.StatusCallCenter = int.Parse(ConfigurationManager.AppSettings["ServiceCallCenter"]);
-      DataTable dataTable = new SystemParameterQueriesBL().GetbyFilter(new ArrayList()
+      DataTable serviceByUserRole = new RequirementQueriesBL().GetServiceByUserRole(systemUser1.i_RoleConfigId.ToString());
+      if (serviceByUserRole.Rows.Count > 0)
       {
-        (object) SystemParameterGroups.RoleCall.ToString((IFormatProvider) CultureInfo.CurrentCulture),
-        (object) "",
-        (object) "1",
-        (object) "1"
-      });
-      DataTable priceServiceDelivery = new RequirementQueriesBL().GetPriceServiceDelivery(471, 0);
-      this.isRegisterCall = ((IEnumerable<string>) dataTable.Rows[0]["v_Value"].ToString().Split('|')).Contains<string>(str);
+        this.TypeService = Convert.ToInt32(serviceByUserRole.Rows[0]["Grupo"]);
+        this.ProductServiceId = Convert.ToInt32(serviceByUserRole.Rows[0]["ProductId"]);
+        if (this.TypeService > 0)
+          this.isRegisterCall = true;
+      }
+      this.StatusCallCenter = int.Parse(ConfigurationManager.AppSettings["ServiceCallCenter"]);
+      DataTable priceServiceDelivery = new RequirementQueriesBL().GetPriceServiceDelivery(this.ProductServiceId, 0);
       if (this.StatusCallCenter == 0)
         this.isRegisterCall = false;
       if (this.isRegisterCall)
@@ -997,7 +995,7 @@ namespace SIIV.WebApp.Requirement
       try
       {
         this.oRequirementQueriesBL = new RequirementQueriesBL();
-        this.dtVehicleData = !this.isRegisterCall ? this.oRequirementQueriesBL.SunarpDataRead(strPlateNumber, strTitle) : this.oRequirementQueriesBL.SunarpDataRead(strPlateNumber, strTitle, this.isRegisterCall);
+        this.dtVehicleData = !this.isRegisterCall ? this.oRequirementQueriesBL.SunarpDataRead(strPlateNumber, strTitle) : this.oRequirementQueriesBL.SunarpDataRead(strPlateNumber, strTitle, this.TypeService);
         this.ViewState["SunarpData"] = (object) this.dtVehicleData;
         this.txtPlateNew.Text = this.dtVehicleData.Rows[0]["v_PlateNew"].ToString();
         this.txtPlateTitle1.Text = this.dtVehicleData.Rows[0]["v_TitleNumber"].ToString();

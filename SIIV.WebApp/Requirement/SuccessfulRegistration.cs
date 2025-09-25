@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.WebApp.Requirement.SuccessfulRegistration
 // Assembly: SIIV.WebApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 7AA326CF-267A-4A0D-8292-415B064D285A
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.WebApp.dll
+// MVID: 0F87038C-530E-41EF-B2A6-8BD0592819DD
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.WebApp.dll
 
 using AjaxControlToolkit;
 using BarcodeLib;
@@ -56,6 +56,7 @@ namespace SIIV.WebApp.Requirement
     protected HtmlTableRow prueba;
     protected HtmlGenericControl trDelivery;
     protected Button btnProgram;
+    protected Label lblDuplicateMsg;
     protected Button Button1;
     protected Button Button2;
     protected Button btnSendMail;
@@ -83,7 +84,7 @@ namespace SIIV.WebApp.Requirement
         DataTable cur = new RequirementQueriesBL().GenerateCUR(int32);
         this.lblPlateRequirement.Text = cur.Rows[0]["v_PlateNew"].ToString();
         string str2 = cur.Rows[0]["i_PlateTypeId"].ToString();
-        cur.Rows[0]["i_ProcessTypeId"].ToString();
+        string str3 = cur.Rows[0]["i_ProcessTypeId"].ToString();
         if (this.Session["SendEmail"] != null)
         {
           DataTable dataTrazabilityId = new RequirementQueriesBL().GetDataTrazabilityId(Convert.ToInt32(str1));
@@ -115,6 +116,8 @@ namespace SIIV.WebApp.Requirement
         {
           this.trDelivery.Visible = true;
           this.lblDias.Text = " 1 día ";
+          if (str3 == "1")
+            this.lblDuplicateMsg.Visible = true;
         }
         if (Convert.ToInt32(this.Session["RequirementPlateType"]) == 5 || Convert.ToInt32(this.Session["RequirementPlateType"]) == 3)
         {

@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.WebApp.Requirement.RequirementData
 // Assembly: SIIV.WebApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 7AA326CF-267A-4A0D-8292-415B064D285A
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.WebApp.dll
+// MVID: 0F87038C-530E-41EF-B2A6-8BD0592819DD
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.WebApp.dll
 
 using AjaxControlToolkit;
 using BarcodeLib;
@@ -28,6 +28,7 @@ using System.Drawing;
 using System.Globalization;
 using System.IO;
 using System.Net;
+using System.Net.Mail;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Web.UI;
@@ -64,6 +65,7 @@ namespace SIIV.WebApp.Requirement
     protected Button wibCur;
     protected Button wibEBilling;
     protected Button SendMail;
+    protected Button SendCurByMail;
     protected HtmlGenericControl divButonDelivery;
     protected Button BtnDelivery;
     protected Button wibReturn;
@@ -98,6 +100,7 @@ namespace SIIV.WebApp.Requirement
     protected TextBox txtEmail;
     protected HtmlTableRow tr1;
     protected Button Enviar;
+    protected Button EnviarCur;
     protected Button volver;
     protected Label lblMensaje;
     protected UpdatePanel UpdatePanel2;
@@ -167,53 +170,44 @@ namespace SIIV.WebApp.Requirement
       System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Script", script, true);
     }
 
-    protected void wibCur_Click(object sender, EventArgs e)
+    private ReportDocument GenerateCurReport()
     {
       if (this.ViewState["i_Requirement"] == null || this.ViewState["i_RequirementPlateId"] == null)
-        return;
-      using (ReportDocument reportDocument = new ReportDocument())
+        return (ReportDocument) null;
+      ReportDocument curReport = new ReportDocument();
+      int int32_1 = Convert.ToInt32(this.ViewState["i_Requirement"], (IFormatProvider) CultureInfo.CurrentCulture);
+      int int32_2 = Convert.ToInt32(this.ViewState["i_RequirementPlateId"], (IFormatProvider) CultureInfo.CurrentCulture);
+      string filename = this.Server.MapPath("../Requirement/ReportCur.rpt");
+      curReport.Load(filename);
+      DataTable curByIds = new RequirementQueriesBL().GenerateCURByIds(int32_1, int32_2);
+      curByIds.Columns.Add(new DataColumn("ImageBarPlate", typeof (byte[])));
+      curByIds.Columns.Add(new DataColumn("Requisite", typeof (string)));
+      curByIds.Columns.Add(new DataColumn("ImageBarCode", typeof (byte[])));
+      int num = 0;
+      string str = "";
+      foreach (DataRow row in (InternalDataCollectionBase) curByIds.Rows)
       {
-        int int32_1 = Convert.ToInt32(this.ViewState["i_Requirement"], (IFormatProvider) CultureInfo.CurrentCulture);
-        int int32_2 = Convert.ToInt32(this.ViewState["i_RequirementPlateId"], (IFormatProvider) CultureInfo.CurrentCulture);
-        string filename = this.Server.MapPath("../Requirement/ReportCur.rpt");
-        reportDocument.Load(filename);
-        DataTable curByIds = new RequirementQueriesBL().GenerateCURByIds(int32_1, int32_2);
-        curByIds.Columns.Add(new DataColumn()
-        {
-          ColumnName = "ImageBarPlate",
-          DataType = typeof (byte[])
-        });
-        curByIds.Columns.Add(new DataColumn()
-        {
-          ColumnName = "Requisite",
-          DataType = typeof (string)
-        });
-        curByIds.Columns.Add(new DataColumn()
-        {
-          ColumnName = "ImageBarCode",
-          DataType = typeof (byte[])
-        });
-        int num = 0;
-        string str = "";
-        foreach (DataRow row in (InternalDataCollectionBase) curByIds.Rows)
-        {
-          byte[] numArray1 = this.ImagenBarCode(row["v_PlateNew"].ToString());
-          row["ImageBarPlate"] = (object) numArray1;
-          string requisitebyRequirement = new RequirementQueriesBL().GetRequisitebyRequirement(int32_1, Convert.ToInt32(row["i_ProcessTypeId"], (IFormatProvider) CultureInfo.CurrentCulture));
-          row["Requisite"] = (object) requisitebyRequirement;
-          byte[] numArray2 = this.ImagenBarCode(row["v_PaymentCode"].ToString());
-          row["ImageBarCode"] = (object) numArray2;
-          if (str != row["i_RequirementId"].ToString().Trim())
-            ++num;
-          str = row["i_RequirementId"].ToString().Trim();
-        }
-        if (curByIds.Rows.Count > 1 && num > 1)
-          curByIds.Rows.RemoveAt(1);
-        reportDocument.SetDataSource(curByIds);
-        reportDocument.ExportToHttpResponse(ExportFormatType.PortableDocFormat, this.Response, true, "Certificado_Unico_Registro");
-        reportDocument.Close();
-        ((Component) reportDocument).Dispose();
+        row["ImageBarPlate"] = (object) this.ImagenBarCode(row["v_PlateNew"].ToString());
+        row["Requisite"] = (object) new RequirementQueriesBL().GetRequisitebyRequirement(int32_1, Convert.ToInt32(row["i_ProcessTypeId"], (IFormatProvider) CultureInfo.CurrentCulture));
+        row["ImageBarCode"] = (object) this.ImagenBarCode(row["v_PaymentCode"].ToString());
+        if (str != row["i_RequirementId"].ToString().Trim())
+          ++num;
+        str = row["i_RequirementId"].ToString().Trim();
       }
+      if (curByIds.Rows.Count > 1 && num > 1)
+        curByIds.Rows.RemoveAt(1);
+      curReport.SetDataSource(curByIds);
+      return curReport;
+    }
+
+    protected void wibCur_Click(object sender, EventArgs e)
+    {
+      ReportDocument curReport = this.GenerateCurReport();
+      if (curReport == null)
+        return;
+      curReport.ExportToHttpResponse(ExportFormatType.PortableDocFormat, this.Response, true, "Certificado_Unico_Registro");
+      curReport.Close();
+      ((Component) curReport).Dispose();
       GC.Collect();
     }
 
@@ -780,6 +774,24 @@ namespace SIIV.WebApp.Requirement
       }
     }
 
+    protected void EnviarCur_Click(object sender, EventArgs e)
+    {
+      this.lblMensaje.Visible = false;
+      if (this.txtEmail.Text != "")
+      {
+        this.sendCurByEmail();
+        string script = UtilDA.ActiveTabIndex("SubTabs", 3, "0,1,2");
+        System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Script", script, true);
+      }
+      else
+      {
+        this.lblMensaje.Visible = true;
+        SIIV.Common.Resource.Message.SetMessage(this.lblMensaje, new HandledException(1, "Debe ingresar una direccion de Email"));
+        string script = UtilDA.ActiveTabIndex("SubTabs", 3, "0,1,2");
+        System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Script", script, true);
+      }
+    }
+
     protected void SendMail_Click(object sender, EventArgs e)
     {
       this.lblMensaje.Visible = false;
@@ -787,7 +799,10 @@ namespace SIIV.WebApp.Requirement
       string v_Estado = "";
       string str = "";
       str = new RequirementManagementBL().EBillingUrl(0, Convert.ToInt32(this.ViewState["i_RequirementPlateId"], (IFormatProvider) CultureInfo.CurrentCulture), out v_Url, out v_Estado);
-      if (int.TryParse(v_Estado, out int _))
+      bool flag = int.TryParse(v_Estado, out int _);
+      this.EnviarCur.Visible = false;
+      this.Enviar.Visible = true;
+      if (flag)
       {
         if (Convert.ToInt32(v_Estado) != 100)
         {
@@ -806,6 +821,109 @@ namespace SIIV.WebApp.Requirement
       }
       else
         System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Script", "AlertaEmail();", true);
+    }
+
+    protected void SendCurByMail_Click(object sender, EventArgs e)
+    {
+      if (this.GenerateCurReport() == null)
+      {
+        SIIV.Common.Resource.Message.SetMessage(this.lblMensaje, new HandledException(1, "No se pudo generar el CUR."));
+      }
+      else
+      {
+        this.EnviarCur.Visible = true;
+        this.Enviar.Visible = false;
+        string script = UtilDA.ActiveTabIndex("SubTabs", 3, "0,1,2");
+        System.Web.UI.ScriptManager.RegisterStartupScript(this.Page, this.Page.GetType(), "Script", script, true);
+        this.txtEmail.Text = (string) this.ViewState["v_beneficiaryEmail"];
+      }
+    }
+
+    protected void sendCurByEmail()
+    {
+      string strFile = ConfigurationManager.AppSettings["HandledLog"] + "EmaiLog_" + DateTime.Today.ToString("yyyyMMdd") + ".log";
+      bool boolean1 = Convert.ToBoolean(string.IsNullOrEmpty(ConfigurationManager.AppSettings["SaveLogEmail"]) ? "false" : (ConfigurationManager.AppSettings["SaveLogEmail"] == "1" ? "true" : "false"));
+      if (boolean1)
+        SIIV.Common.Resource.Utilities.Logging.WriteFileLog(strFile, "sendCurByEmail - Inicio de envío de correo", enmFileSection.Header);
+      try
+      {
+        DataTable dataTable1 = new SystemParameterQueriesBL().GetbyFilter(new ArrayList()
+        {
+          (object) SystemParameterGroups.SMTPServerConfiguration.ToString((IFormatProvider) CultureInfo.CurrentCulture),
+          (object) "",
+          (object) "1",
+          (object) "1"
+        });
+        string str1 = dataTable1.Rows[0]["v_Value"].ToString();
+        int num = int.Parse(dataTable1.Rows[1]["v_Value"].ToString(), (IFormatProvider) CultureInfo.CurrentCulture);
+        string userName = dataTable1.Rows[2]["v_Value"].ToString();
+        string password = dataTable1.Rows[3]["v_Value"].ToString();
+        bool boolean2 = Convert.ToBoolean(dataTable1.Rows[4]["v_Value"], (IFormatProvider) CultureInfo.CurrentCulture);
+        DataTable dataTable2 = new SystemParameterQueriesBL().GetbyFilter(new ArrayList()
+        {
+          (object) SystemParameterGroups.RequerimentCUREmailConfiguration.ToString((IFormatProvider) CultureInfo.CurrentCulture),
+          (object) "",
+          (object) "1",
+          (object) "1"
+        });
+        string str2 = dataTable2.Rows[0]["v_Value"].ToString();
+        string str3 = dataTable2.Rows[1]["v_Value"].ToString();
+        string address = dataTable2.Rows[2]["v_Value"].ToString();
+        string str4 = dataTable2.Rows[3]["v_Value"].ToString();
+        string addresses = this.txtEmail.Text.Trim();
+        if (boolean1)
+          SIIV.Common.Resource.Utilities.Logging.WriteFileLog(strFile, "sendCurByEmail - Enviando correo a: " + addresses, enmFileSection.Content);
+        dataTable2.Dispose();
+        ReportDocument curReport = this.GenerateCurReport();
+        if (curReport == null)
+        {
+          SIIV.Common.Resource.Message.SetMessage(this.lblMensaje, new HandledException(1, "No se pudo generar el CUR."));
+        }
+        else
+        {
+          string str5 = Path.Combine(Path.GetTempPath(), "Certificado_Unico_Registro.pdf");
+          curReport.ExportToDisk(ExportFormatType.PortableDocFormat, str5);
+          curReport.Close();
+          ((Component) curReport).Dispose();
+          Attachment attachment = new Attachment(str5);
+          MailMessage message = new MailMessage();
+          message.From = new MailAddress(address);
+          message.To.Add(addresses);
+          message.Subject = str2;
+          message.Body = str3 + str4;
+          message.IsBodyHtml = true;
+          message.Priority = MailPriority.Normal;
+          ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
+          SmtpClient smtpClient = new SmtpClient()
+          {
+            Host = str1,
+            UseDefaultCredentials = false,
+            EnableSsl = boolean2,
+            Port = num,
+            Credentials = (ICredentialsByHost) new NetworkCredential(userName, password)
+          };
+          message.Attachments.Add(attachment);
+          smtpClient.Send(message);
+          SIIV.Common.Resource.Message.SetMessage(this.lblMensaje, new HandledException(2, "El CUR fue enviado correctamente."));
+          smtpClient.Dispose();
+          message.Dispose();
+          attachment.Dispose();
+          System.IO.File.Delete(str5);
+          if (!boolean1)
+            return;
+          SIIV.Common.Resource.Utilities.Logging.WriteFileLog(strFile, "sendCurByEmail - Correo enviado correctamente", enmFileSection.Content);
+        }
+      }
+      catch (HandledException ex)
+      {
+        SIIV.Common.Resource.Utilities.Logging.WriteFileLog(strFile, "sendCurByEmail - Error en el envío - " + ex.Message, enmFileSection.Content);
+        SIIV.Common.Resource.Message.SetMessage(this.lblMensaje, ex);
+      }
+      catch (Exception ex)
+      {
+        SIIV.Common.Resource.Utilities.Logging.WriteFileLog(strFile, "sendCurByEmail - Error inesperado - " + ex.Message, enmFileSection.Content);
+        SIIV.Common.Resource.Message.SetMessage(this.lblMensaje, new HandledException(-100, ex));
+      }
     }
 
     protected void sendEmail()
@@ -950,7 +1068,7 @@ namespace SIIV.WebApp.Requirement
             }
           }
           if (num != -1)
-            flag = Mail.SendEmail(pstrSMTPServer, pintSMTPPort, str4, pstrSMTPPassword, boolean1, str4, pstrEmailTo, pstrEmailCC, (List<string>) null, pstrEmailSubject, pstrEmailBody, boolean2, boolean3, plstAttachments);
+            flag = SIIV.Common.Resource.Utilities.Mail.SendEmail(pstrSMTPServer, pintSMTPPort, str4, pstrSMTPPassword, boolean1, str4, pstrEmailTo, pstrEmailCC, (List<string>) null, pstrEmailSubject, pstrEmailBody, boolean2, boolean3, plstAttachments);
           if (!flag)
           {
             if (num == -1)

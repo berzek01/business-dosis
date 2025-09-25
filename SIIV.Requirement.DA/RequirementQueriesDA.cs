@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.Requirement.DA.RequirementQueriesDA
 // Assembly: SIIV.Requirement.DA, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 3193B483-1C99-47A3-B806-34369171C902
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.Requirement.DA.dll
+// MVID: 4532E3C2-7D38-4E0C-8CE9-E0E8FA4FAED3
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.Requirement.DA.dll
 
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Data;
@@ -29,7 +29,7 @@ namespace SIIV.Requirement.DA
       this.cadenaConexionReporting = SIIV.Common.DA.Constants.Constants.NombreConexionReporting;
     }
 
-    public DataTable UniversalQueryRead(//LISTO
+    public DataTable UniversalQueryRead(
       string pstrPlateNew,
       int pintStartdate,
       int pintFinishdate,
@@ -92,7 +92,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable EBillingUniversalQueryRead(//LISTO
+    public DataTable EBillingUniversalQueryRead(
       int pintProfType,
       int pintStartdate,
       int pintFinishdate,
@@ -155,7 +155,7 @@ namespace SIIV.Requirement.DA
       string strSerieDocument,
       int startRowIndex,
       int maxRows,
-      out int pinttotalRows)//LISTO
+      out int pinttotalRows)
     {
       try
       {
@@ -200,7 +200,7 @@ namespace SIIV.Requirement.DA
       int pintStatus,
       int pintStartRowIndex,
       int pintMaxRows,
-      out int pintTotalRows)//LISTO
+      out int pintTotalRows)
     {
       try
       {
@@ -242,7 +242,7 @@ namespace SIIV.Requirement.DA
       int pintUserId,
       int pintStartRowIndex,
       int pintMaxRows,
-      out int pintTotalRows)//LISTO
+      out int pintTotalRows)
     {
       try
       {
@@ -276,7 +276,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable PermissionBlockPlates(int pintUserId)//SIN LOGICA
+    public DataTable PermissionBlockPlates(int pintUserId)
     {
       try
       {
@@ -303,7 +303,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GestPlatesRequirementStatus(string pstrPlate)//LISTO
+    public DataTable GestPlatesRequirementStatus(string pstrPlate)
     {
       try
       {
@@ -340,7 +340,7 @@ namespace SIIV.Requirement.DA
       int i_Status,
       int pintStartRowIndex,
       int pintMaxRows,
-      out int pintTotalRows)//LISTO
+      out int pintTotalRows)
     {
       try
       {
@@ -377,7 +377,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetRequiredStageByIdProcess(int pintProcessTypeId)//LISTO
+    public DataTable GetRequiredStageByIdProcess(int pintProcessTypeId)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable stageByIdProcess;
@@ -394,7 +394,7 @@ namespace SIIV.Requirement.DA
       return stageByIdProcess;
     }
 
-    public DataTable GetRequirementDatabyPlate(string pstrPlate)//LISTO
+    public DataTable GetRequirementDatabyPlate(string pstrPlate)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable requirementDatabyPlate;
@@ -410,7 +410,7 @@ namespace SIIV.Requirement.DA
       return requirementDatabyPlate;
     }
 
-    public DataTable GetRequirementDatabyRetail(int i_RequirementId)//NO EXISTE
+    public DataTable GetRequirementDatabyRetail(int i_RequirementId)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable requirementDatabyRetail;
@@ -426,7 +426,7 @@ namespace SIIV.Requirement.DA
       return requirementDatabyRetail;
     }
 
-    public DataTable GetRequirementDatabyPaymentCode(string v_PaymentCode)//LISTO
+    public DataTable GetRequirementDatabyPaymentCode(string v_PaymentCode)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable databyPaymentCode;
@@ -442,7 +442,7 @@ namespace SIIV.Requirement.DA
       return databyPaymentCode;
     }
 
-    public DataTable GetPaymentDatabyPaymentCode(string v_PaymentCode)//LISTO
+    public DataTable GetPaymentDatabyPaymentCode(string v_PaymentCode)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable databyPaymentCode;
@@ -458,7 +458,7 @@ namespace SIIV.Requirement.DA
       return databyPaymentCode;
     }
 
-    public int ValidateExistRequirementByPlateTitle(string pstrPlateNumber, string pstrTitle)//LISTO
+    public int ValidateExistRequirementByPlateTitle(string pstrPlateNumber, string pstrTitle)
     {
       try
       {
@@ -486,7 +486,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int ValidateExistSunarpByPlateTitle(string pstrPlateNumber, string pstrTitle)//LISTO
+    public int ValidateExistSunarpByPlateTitle(string pstrPlateNumber, string pstrTitle)
     {
       try
       {
@@ -514,7 +514,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int ValidateExistSunarpByPlateVinSerie(string pstrPlateNumber, string pstrVinSerie)//LISTO
+    public int ValidateExistSunarpByPlateVinSerie(string pstrPlateNumber, string pstrVinSerie)
     {
       try
       {
@@ -542,7 +542,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable ValidateExistDeliveryPoint(int pintDeliveryPointId)//LISTO
+    public DataTable ValidateExistDeliveryPoint(int pintDeliveryPointId)
     {
       try
       {
@@ -569,7 +569,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public string DeliveryDireccion(int pintDeliveryPointId)//LISTO
+    public string DeliveryDireccion(int pintDeliveryPointId)
     {
       try
       {
@@ -596,7 +596,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable SunarpDataRead(string pstrPlateNumber, string pstrTitle, bool irol)//LISTO
+    public DataTable SunarpDataRead(string pstrPlateNumber, string pstrTitle, int irol)
     {
       try
       {
@@ -606,7 +606,7 @@ namespace SIIV.Requirement.DA
         {
           instance.AddInParameter(storedProcCommand, "v_PlateNumber", DbType.String, (object) pstrPlateNumber);
           instance.AddInParameter(storedProcCommand, "v_TitleNumber", DbType.String, (object) pstrTitle);
-          instance.AddInParameter(storedProcCommand, nameof (irol), DbType.Boolean, (object) irol);
+          instance.AddInParameter(storedProcCommand, nameof (irol), DbType.Int32, (object) irol);
           using (IDataReader reader = instance.ExecuteReader(storedProcCommand))
           {
             dataTable = new DataTable();
@@ -625,7 +625,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable SunarpDataReadbyId(int pintVehicleId, bool irol)//LISTO
+    public DataTable SunarpDataReadbyId(int pintVehicleId, int irol)
     {
       try
       {
@@ -634,7 +634,7 @@ namespace SIIV.Requirement.DA
         using (DbCommand storedProcCommand = instance.GetStoredProcCommand("[Requirement].[usp_SunarpDataReadbyId]"))
         {
           instance.AddInParameter(storedProcCommand, "i_VehicleId", DbType.Int32, (object) pintVehicleId);
-          instance.AddInParameter(storedProcCommand, nameof (irol), DbType.Boolean, (object) irol);
+          instance.AddInParameter(storedProcCommand, nameof (irol), DbType.Int32, (object) irol);
           using (IDataReader reader = instance.ExecuteReader(storedProcCommand))
           {
             dataTable = new DataTable();
@@ -653,7 +653,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable SunarpDataRead3rd(string pstrPlateNumber, bool irol)//LISTO
+    public DataTable SunarpDataRead3rd(string pstrPlateNumber, int irol)
     {
       try
       {
@@ -662,7 +662,7 @@ namespace SIIV.Requirement.DA
         using (DbCommand storedProcCommand = instance.GetStoredProcCommand("[Requirement].[usp_SunarpDataRead3rd]"))
         {
           instance.AddInParameter(storedProcCommand, "v_PlateNumber", DbType.String, (object) pstrPlateNumber);
-          instance.AddInParameter(storedProcCommand, nameof (irol), DbType.Boolean, (object) irol);
+          instance.AddInParameter(storedProcCommand, nameof (irol), DbType.Int32, (object) irol);
           using (IDataReader reader = instance.ExecuteReader(storedProcCommand))
           {
             dataTable = new DataTable();
@@ -681,7 +681,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable SunarpDataReadChangeUse(string pstrPlateNumber, bool irol)//LISTO
+    public DataTable SunarpDataReadChangeUse(string pstrPlateNumber, int irol)
     {
       try
       {
@@ -690,7 +690,7 @@ namespace SIIV.Requirement.DA
         using (DbCommand storedProcCommand = instance.GetStoredProcCommand("[Requirement].[usp_SunarpDataReadChangeUse]"))
         {
           instance.AddInParameter(storedProcCommand, "v_PlateNumber", DbType.String, (object) pstrPlateNumber);
-          instance.AddInParameter(storedProcCommand, nameof (irol), DbType.Boolean, (object) irol);
+          instance.AddInParameter(storedProcCommand, nameof (irol), DbType.Int32, (object) irol);
           using (IDataReader reader = instance.ExecuteReader(storedProcCommand))
           {
             dataTable = new DataTable();
@@ -709,7 +709,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable SunarpDataReadChangeUseRectification(string pstrPlateNumber, int pintVehicleId)//LISTO
+    public DataTable SunarpDataReadChangeUseRectification(string pstrPlateNumber, int pintVehicleId)
     {
       try
       {
@@ -737,7 +737,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetOwnersByIdSunarp(int pintVehicleId)//LISTO
+    public DataTable GetOwnersByIdSunarp(int pintVehicleId)
     {
       try
       {
@@ -764,7 +764,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetProofPaymenType()//GETGROUP
+    public DataTable GetProofPaymenType()
     {
       try
       {
@@ -795,7 +795,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetActionProceesEBilling(int iRequirementID)//LISTO
+    public DataTable GetActionProceesEBilling(int iRequirementID)
     {
       try
       {
@@ -822,7 +822,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetActionProceesCashRegUser(int i_InsertUserId)//LISTO
+    public DataTable GetActionProceesCashRegUser(int i_InsertUserId)
     {
       try
       {
@@ -855,7 +855,7 @@ namespace SIIV.Requirement.DA
       string v_BoxCode,
       string v_BoxIdentification,
       int i_InsertUserId,
-      int i_Type)//LISTO
+      int i_Type)
     {
       try
       {
@@ -887,7 +887,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetPersonType()//LISTO
+    public DataTable GetPersonType()
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable personType;
@@ -906,7 +906,7 @@ namespace SIIV.Requirement.DA
       return personType;
     }
 
-    public DataTable GetProofPaymenTypeSpecial()//LISTO
+    public DataTable GetProofPaymenTypeSpecial()
     {
       try
       {
@@ -936,7 +936,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetDocumentType()//LISTO
+    public DataTable GetDocumentType()
     {
       try
       {
@@ -983,7 +983,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetRequirementPlateStatus()//GETGROUP
+    public DataTable GetRequirementPlateStatus()
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable requirementPlateStatus;
@@ -1019,7 +1019,7 @@ namespace SIIV.Requirement.DA
       return requirementPlateStatus;
     }
 
-    public DataTable GetEbillingProofPaymentType()//GETGROUP
+    public DataTable GetEbillingProofPaymentType()
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable proofPaymentType;
@@ -1058,7 +1058,7 @@ namespace SIIV.Requirement.DA
     public DataTable GetLocation(
       string pstrLocationid,
       string pstrDescription,
-      string pstrCompanyId)//LISTO
+      string pstrCompanyId)
     {
       try
       {
@@ -1097,7 +1097,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetLocationRequirement()//LISTO
+    public DataTable GetLocationRequirement()
     {
       try
       {
@@ -1158,7 +1158,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetBank()//LISTO
+    public DataTable GetBank()
     {
       try
       {
@@ -1205,7 +1205,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetChangeUse(int pintUseTypeId, int pintCategoryId)//LISTO
+    public DataTable GetChangeUse(int pintUseTypeId, int pintCategoryId)
     {
       try
       {
@@ -1237,7 +1237,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetProductbyTypeUse(int pintUseTypeId)//LISTO
+    public DataTable GetProductbyTypeUse(int pintUseTypeId)
     {
       try
       {
@@ -1264,7 +1264,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetPriceServiceDelivery(int i_ProductId, int pintCorrespondenceType)//LISTO
+    public DataTable GetPriceServiceDelivery(int i_ProductId, int pintCorrespondenceType)
     {
       try
       {
@@ -1292,7 +1292,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int Verify3rdPlate(string pstrPlateNumber)//LISTO
+    public int Verify3rdPlate(string pstrPlateNumber)
     {
       try
       {
@@ -1319,7 +1319,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int VerifyProcess3rdPlate(string pstrPlateNumber)//LISTO
+    public int VerifyProcess3rdPlate(string pstrPlateNumber)
     {
       try
       {
@@ -1346,7 +1346,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable ValidateProductPrice3rd(string pstrPlateNumber, bool irol)//LISTO
+    public DataTable ValidateProductPrice3rd(string pstrPlateNumber, int irol)
     {
       try
       {
@@ -1355,7 +1355,7 @@ namespace SIIV.Requirement.DA
         using (DbCommand storedProcCommand = instance.GetStoredProcCommand("[Requirement].[usp_ValidateProductPrice3rd]"))
         {
           instance.AddInParameter(storedProcCommand, "v_PlateNumber", DbType.String, (object) pstrPlateNumber);
-          instance.AddInParameter(storedProcCommand, nameof (irol), DbType.Boolean, (object) irol);
+          instance.AddInParameter(storedProcCommand, nameof (irol), DbType.Int32, (object) irol);
           using (IDataReader reader = instance.ExecuteReader(storedProcCommand))
           {
             dataTable = new DataTable();
@@ -1374,7 +1374,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public string GetCorrelativeTitle()//LISTO
+    public string GetCorrelativeTitle()
     {
       try
       {
@@ -1404,7 +1404,7 @@ namespace SIIV.Requirement.DA
     public DataTable ChangeUseRead(
       string pstrUseType,
       string pstrCategory,
-      string pstrUseTargetType)//LISTO CON ERROR
+      string pstrUseTargetType)
     {
       try
       {
@@ -1433,7 +1433,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetUseType()//GETGROUP
+    public DataTable GetUseType()
     {
       try
       {
@@ -1463,7 +1463,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetProcess()//LISTO
+    public DataTable GetProcess()
     {
       try
       {
@@ -1510,7 +1510,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetCategory()//LISTO
+    public DataTable GetCategory()
     {
       try
       {
@@ -1557,7 +1557,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetGroup(string strGroup)//LISTO
+    public DataTable GetGroup(string strGroup)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable group;
@@ -1576,7 +1576,7 @@ namespace SIIV.Requirement.DA
       return group;
     }
 
-    public DataTable GenerateCUR(int pintRequirementId)//LISTO
+    public DataTable GenerateCUR(int pintRequirementId)
     {
       try
       {
@@ -1603,7 +1603,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GenerateCURByIds(int pintRequirementId, int pintRequirementPlateId)//LISTO
+    public DataTable GenerateCURByIds(int pintRequirementId, int pintRequirementPlateId)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable curByIds;
@@ -1620,7 +1620,7 @@ namespace SIIV.Requirement.DA
       return curByIds;
     }
 
-    public DataTable GenerateDeliveryCUR(int pintRequirementId)//LISTO
+    public DataTable GenerateDeliveryCUR(int pintRequirementId)
     {
       try
       {
@@ -1647,7 +1647,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GenerateCashRegister(int i_CashRegId, int i_InsertUserId, int i_Type)//NO UTILIZA TODS SUS PARAMETROS
+    public DataTable GenerateCashRegister(int i_CashRegId, int i_InsertUserId, int i_Type)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable cashRegister;
@@ -1665,7 +1665,7 @@ namespace SIIV.Requirement.DA
       return cashRegister;
     }
 
-    public DataTable GetSpecialPlateClass(int pintVehicleRegistration, int pintSpecialPlate)//LISTO
+    public DataTable GetSpecialPlateClass(int pintVehicleRegistration, int pintSpecialPlate)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable specialPlateClass;
@@ -1690,7 +1690,7 @@ namespace SIIV.Requirement.DA
       return specialPlateClass;
     }
 
-    public DataTable GetSpecialPlate(int pintVehicleRegistration)//LISTO
+    public DataTable GetSpecialPlate(int pintVehicleRegistration)
     {
       try
       {
@@ -1725,7 +1725,7 @@ namespace SIIV.Requirement.DA
     public DataTable GetSpecialRequirementType(
       int pintVehicleRegistration,
       int pintSpecialPlateType,
-      int pintVehicleClass)//LISTO
+      int pintVehicleClass)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable specialRequirementType;
@@ -1752,7 +1752,7 @@ namespace SIIV.Requirement.DA
       return specialRequirementType;
     }
 
-    public DataTable ValidateExistMRE(string pstrPlateNumber, int pintProcessTypeId)//LISTO
+    public DataTable ValidateExistMRE(string pstrPlateNumber, int pintProcessTypeId)
     {
       try
       {
@@ -1782,7 +1782,7 @@ namespace SIIV.Requirement.DA
 
     public DataTable GetProductByRegistrationClass(
       int pintVehicleRegistration,
-      int pintVehicleClass)//LISTO
+      int pintVehicleClass)
     {
       try
       {
@@ -1814,7 +1814,7 @@ namespace SIIV.Requirement.DA
       int i_RoleConfigId,
       int startRowIndex,
       int maxRows,
-      out int pintTotalRows)//LISTO
+      out int pintTotalRows)
     {
       try
       {
@@ -1845,7 +1845,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int DeleteOffice(int i_RelatedDocumentId, int i_SystemUserId)//LISTO
+    public int DeleteOffice(int i_RelatedDocumentId, int i_SystemUserId)
     {
       int num = 0;
       try
@@ -1870,7 +1870,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public string CodeOfficeGenerate()//LISTO
+    public string CodeOfficeGenerate()
     {
       try
       {
@@ -1896,7 +1896,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetRelatedDocument(int i_RoleConfigId)//LISTO
+    public DataTable GetRelatedDocument(int i_RoleConfigId)
     {
       try
       {
@@ -1923,7 +1923,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetRelatedDocumentbyId(int id)//LISTO
+    public DataTable GetRelatedDocumentbyId(int id)
     {
       try
       {
@@ -1957,7 +1957,7 @@ namespace SIIV.Requirement.DA
       int intAppoved,
       int intProcess,
       string strInsertUser,
-      string strOficio)//LISTO
+      string strOficio)
     {
       try
       {
@@ -1990,7 +1990,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetRequirementPlateDatabyId(int pintRequirement)//LISTO
+    public DataTable GetRequirementPlateDatabyId(int pintRequirement)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable requirementPlateDatabyId;
@@ -2006,7 +2006,7 @@ namespace SIIV.Requirement.DA
       return requirementPlateDatabyId;
     }
 
-    public DataTable GetSunarpDatabyId(int pintVehicleId, int pintRequirementPlate)//LISTO
+    public DataTable GetSunarpDatabyId(int pintVehicleId, int pintRequirementPlate)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable sunarpDatabyId;
@@ -2023,7 +2023,7 @@ namespace SIIV.Requirement.DA
       return sunarpDatabyId;
     }
 
-    public DataTable GetPaymentDatabyRequirement(int pintRequirement, int pintRequirementPlate)//LISTO
+    public DataTable GetPaymentDatabyRequirement(int pintRequirement, int pintRequirementPlate)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable databyRequirement;
@@ -2040,7 +2040,7 @@ namespace SIIV.Requirement.DA
       return databyRequirement;
     }
 
-    public DataTable GetDistrict(int i_ParameterId, int iVehicleClassId)//LISTO
+    public DataTable GetDistrict(int i_ParameterId, int iVehicleClassId)
     {
       try
       {
@@ -2071,7 +2071,7 @@ namespace SIIV.Requirement.DA
     public DataTable GetDistrictByDeliveryPoint(
       int pintDeliveryPoint,
       int i_VehicleClasification,
-      int i_Cobertura)//LISTO
+      int i_Cobertura)
     {
       try
       {
@@ -2100,7 +2100,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetProofPaperDatabyRequirement(int pintRequirementPlate)//LISTO
+    public DataTable GetProofPaperDatabyRequirement(int pintRequirementPlate)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable databyRequirement;
@@ -2116,7 +2116,7 @@ namespace SIIV.Requirement.DA
       return databyRequirement;
     }
 
-    public int GetProductCorrespondence(int pintProductid, int pintCorrespondenceType)//LISTO
+    public int GetProductCorrespondence(int pintProductid, int pintCorrespondenceType)
     {
       try
       {
@@ -2146,7 +2146,7 @@ namespace SIIV.Requirement.DA
 
     public DataTable GetAgreggateProducts(
       int pintCorrespondenceTypeId,
-      int pintVehicleClasificationId)//NO EXISTE
+      int pintVehicleClasificationId)
     {
       try
       {
@@ -2174,7 +2174,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public string GetRequisitebyRequirement(int pintRequirementId, int pintProcessId)//LISTO
+    public string GetRequisitebyRequirement(int pintRequirementId, int pintProcessId)
     {
       try
       {
@@ -2202,7 +2202,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int GetSystemUserPublic(int pintSystemUserId, int pintApplicationId)//LISTO
+    public int GetSystemUserPublic(int pintSystemUserId, int pintApplicationId)
     {
       try
       {
@@ -2230,7 +2230,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public string GetSystemUserExtendedAction(int pintSystemUserId, int pintApplicationId)//LISTO
+    public string GetSystemUserExtendedAction(int pintSystemUserId, int pintApplicationId)
     {
       try
       {
@@ -2274,7 +2274,7 @@ namespace SIIV.Requirement.DA
       out string opstrStatus,
       out string opstrDeliveryPoint,
       out string opstrStartDate,
-      out string opstrInsertDate)//LISTO
+      out string opstrInsertDate)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexionReporting);
       using (DbCommand storedProcCommand = instance.GetStoredProcCommand("[Requirement].[usp_RequirementGetStatus]"))
@@ -2314,7 +2314,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public string GetPaymentCode(int pintRequirementPlate)//LISTO
+    public string GetPaymentCode(int pintRequirementPlate)
     {
       try
       {
@@ -2341,7 +2341,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetRequirementContributor(int pintContributorType, int pintRequirement)//LISTO
+    public DataTable GetRequirementContributor(int pintContributorType, int pintRequirement)
     {
       try
       {
@@ -2369,7 +2369,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int GetRequirementIdByRequirementPlateId(int pintRequirementPlateId)//LISTO
+    public int GetRequirementIdByRequirementPlateId(int pintRequirementPlateId)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       int int32;
@@ -2383,7 +2383,7 @@ namespace SIIV.Requirement.DA
       return int32;
     }
 
-    public int GetRequirementPlateIdByPlateNumber(string pstrPlateNumber)//LISTO
+    public int GetRequirementPlateIdByPlateNumber(string pstrPlateNumber)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       int int32;
@@ -2397,7 +2397,7 @@ namespace SIIV.Requirement.DA
       return int32;
     }
 
-    public DataTable GetRequirementProgramation(string v_Plate)//LISTO
+    public DataTable GetRequirementProgramation(string v_Plate)
     {
       try
       {
@@ -2420,7 +2420,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetDeliveryCouriers(int iLocation)//LISTO
+    public DataTable GetDeliveryCouriers(int iLocation)
     {
       try
       {
@@ -2443,7 +2443,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetRequirementSchedule(string v_Plate)//NO DATA
+    public DataTable GetRequirementSchedule(string v_Plate)
     {
       try
       {
@@ -2470,7 +2470,7 @@ namespace SIIV.Requirement.DA
       int pintProductId,
       out Decimal f_PriceCost,
       out Decimal f_PriceTax,
-      out Decimal f_PriceSale)//LISTO
+      out Decimal f_PriceSale)
     {
       try
       {
@@ -2500,7 +2500,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable DeliveryListGetByIdZone(int i_ZoneReference, int i_RequirementPlateId)//LISTO
+    public DataTable DeliveryListGetByIdZone(int i_ZoneReference, int i_RequirementPlateId)
     {
       try
       {
@@ -2524,7 +2524,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable DeliveryListGetByIdZoneOne(int i_RequirementPlateId)//LISTO
+    public DataTable DeliveryListGetByIdZoneOne(int i_RequirementPlateId)
     {
       try
       {
@@ -2547,7 +2547,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable DeliverySendEmail(int i_RequirementPlateId)//LISTO
+    public DataTable DeliverySendEmail(int i_RequirementPlateId)
     {
       try
       {
@@ -2574,7 +2574,7 @@ namespace SIIV.Requirement.DA
       int i_RequirementPlateId,
       int i_Motive,
       string v_ObservationA,
-      int i_SystemUserId)//LISTO NO PROBADO
+      int i_SystemUserId)
     {
       int num = 0;
       try
@@ -2606,7 +2606,7 @@ namespace SIIV.Requirement.DA
       int i_Flag,
       int pintStartRowIndex,
       int pintMaxRows,
-      out int pintTotalRows)//LISTO
+      out int pintTotalRows)
     {
       Database instance = EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable dataTable = (DataTable) null;
@@ -2632,7 +2632,7 @@ namespace SIIV.Requirement.DA
       return dataTable;
     }
 
-    public DataTable SearchStatusDeliveryReport()//LISTO
+    public DataTable SearchStatusDeliveryReport()
     {
       Database instance = EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable dataTable = (DataTable) null;
@@ -2653,7 +2653,7 @@ namespace SIIV.Requirement.DA
       DateTime d_EndDate,
       int pintStartRowIndex,
       int pintMaxRows,
-      out int pintTotalRows)//LISTO mucha data
+      out int pintTotalRows)
     {
       Database instance = EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable dataTable = (DataTable) null;
@@ -2675,7 +2675,7 @@ namespace SIIV.Requirement.DA
       return dataTable;
     }
 
-    public DataTable SearchStatusDeliveryDetail(int i_RequirementPlateId)//LISTO
+    public DataTable SearchStatusDeliveryDetail(int i_RequirementPlateId)
     {
       Database instance = EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable dataTable = (DataTable) null;
@@ -2691,7 +2691,7 @@ namespace SIIV.Requirement.DA
       return dataTable;
     }
 
-    public DataTable GetGroupsDelivery(int i_GroupId, int i_ParameterId, string v_option)//LISTO
+    public DataTable GetGroupsDelivery(int i_GroupId, int i_ParameterId, string v_option)
     {
       Database instance = EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable groupsDelivery = (DataTable) null;
@@ -2709,7 +2709,7 @@ namespace SIIV.Requirement.DA
       return groupsDelivery;
     }
 
-    public DataTable GetVReferenceDelivery(int i_GroupId, int i_ParameterId)//LISTO
+    public DataTable GetVReferenceDelivery(int i_GroupId, int i_ParameterId)
     {
       Database instance = EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable vreferenceDelivery = (DataTable) null;
@@ -2728,7 +2728,7 @@ namespace SIIV.Requirement.DA
 
     public DataTable GetRequirementProgrmationDelivery(
       int i_RequirementPlateid,
-      int pintSystemUserId)//LISTO
+      int pintSystemUserId)
     {
       Database instance = EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable progrmationDelivery = (DataTable) null;
@@ -2745,7 +2745,7 @@ namespace SIIV.Requirement.DA
       return progrmationDelivery;
     }
 
-    public DataTable ProcessSunarpToProcessType(string v_PlateMotive) //NO EXISTE
+    public DataTable ProcessSunarpToProcessType(string v_PlateMotive)
     {
       try
       {
@@ -2768,7 +2768,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public string GetDescriptionProduct(int pintProductid)//LISTO
+    public string GetDescriptionProduct(int pintProductid)
     {
       try
       {
@@ -2795,7 +2795,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int GetCantDeliveryServices(int i_SystemUserId)//NO DATA
+    public int GetCantDeliveryServices(int i_SystemUserId)
     {
       try
       {
@@ -2822,7 +2822,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetBlockShedule(int i_BlockSheduleId)//LISTO
+    public DataTable GetBlockShedule(int i_BlockSheduleId)
     {
       try
       {
@@ -2849,7 +2849,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetBlockSheduleZone(string v_ReferenceId)//LISTO
+    public DataTable GetBlockSheduleZone(string v_ReferenceId)
     {
       try
       {
@@ -2876,7 +2876,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable SearchBlockSheduleZone(DateTime dt_Date, int i_BlockSheduleId, int i_ZoneId)//LISTO
+    public DataTable SearchBlockSheduleZone(DateTime dt_Date, int i_BlockSheduleId, int i_ZoneId)
     {
       try
       {
@@ -2905,7 +2905,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable ZoneByLocationGet(string pintLocationId)//LISTO
+    public DataTable ZoneByLocationGet(string pintLocationId)
     {
       try
       {
@@ -2936,7 +2936,7 @@ namespace SIIV.Requirement.DA
       int pintLocationId,
       int pintStartRowIndex,
       int pintMaxRows,
-      out int pintTotalRows)//LISTO
+      out int pintTotalRows)
     {
       try
       {
@@ -2967,7 +2967,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetDescriptionExceptionsByType(int pinTypeExceptionsId, int pinZoneId)//LISTO
+    public DataTable GetDescriptionExceptionsByType(int pinTypeExceptionsId, int pinZoneId)
     {
       try
       {
@@ -3027,7 +3027,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable RequirementGetByPaymentCode(string v_PaymentCode, int i_RequirementId)//LISTO
+    public DataTable RequirementGetByPaymentCode(string v_PaymentCode, int i_RequirementId)
     {
       try
       {
@@ -3055,7 +3055,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int UpdateRequirementBoundVisa(int i_RequirementId)//LISTO
+    public int UpdateRequirementBoundVisa(int i_RequirementId)
     {
       try
       {
@@ -3078,7 +3078,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int UpdateRequirementBoundCash(int i_RequirementId)//LISTO
+    public int UpdateRequirementBoundCash(int i_RequirementId)
     {
       try
       {
@@ -3101,7 +3101,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int UpdateETicketVisa(string v_PaymentCode, string v_Eticket, string v_NumOrden)//LISTO
+    public int UpdateETicketVisa(string v_PaymentCode, string v_Eticket, string v_NumOrden)
     {
       int num = 0;
       try
@@ -3126,7 +3126,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int AccreditPayment(string Cod, int Type, string IdTrans)//ENVIA UN EMAIL
+    public int AccreditPayment(string Cod, int Type, string IdTrans)
     {
       int num = 0;
       try
@@ -3151,7 +3151,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int EBillingPayment()//ENVIA UN EMAIL
+    public int EBillingPayment()
     {
       int num = 0;
       try
@@ -3174,7 +3174,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetEBillingIssued()//ENVIA UN EMAIL
+    public DataTable GetEBillingIssued()
     {
       try
       {
@@ -3200,7 +3200,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetEBillingInternal()//LISTO
+    public DataTable GetEBillingInternal()
     {
       try
       {
@@ -3226,7 +3226,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable ETicketVisaGet(string v_Eticket)//LISTO
+    public DataTable ETicketVisaGet(string v_Eticket)
     {
       try
       {
@@ -3253,7 +3253,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public string ElectronicBillGet(int i_requirementPlateId)//NO EXISTE
+    public string ElectronicBillGet(int i_requirementPlateId)
     {
       try
       {
@@ -3304,7 +3304,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetLogServiceVisaByStatusPayment()//NO DATA
+    public DataTable GetLogServiceVisaByStatusPayment()
     {
       try
       {
@@ -3330,7 +3330,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int ProcessAccreditPaymentVisa()//LISTO
+    public int ProcessAccreditPaymentVisa()
     {
       int num = 0;
       try
@@ -3350,7 +3350,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int ProcessAccreditPaymentBanks()//LISTO
+    public int ProcessAccreditPaymentBanks()
     {
       int num = 0;
       try
@@ -3370,7 +3370,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int CancelPayment(string Cod, int Type)//LISTO NO PROBADO
+    public int CancelPayment(string Cod, int Type)
     {
       int num = 0;
       try
@@ -3402,7 +3402,7 @@ namespace SIIV.Requirement.DA
       string v_Description,
       int startRowIndex,
       int maxRows,
-      out int totalRows)//ERROR
+      out int totalRows)
     {
       try
       {
@@ -3448,7 +3448,7 @@ namespace SIIV.Requirement.DA
       int pintUserId,
       int startRowIndex,
       int maxRows,
-      out int pinttotalRows)//LISTO
+      out int pinttotalRows)
     {
       try
       {
@@ -3496,7 +3496,7 @@ namespace SIIV.Requirement.DA
       string v_OwnerCompleteName,
       int pintStartRowIndex,
       int pintMaxRows,
-      out int pintTotalRows)//LISTO
+      out int pintTotalRows)
     {
       try
       {
@@ -3533,7 +3533,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetDataManufacturedByPlate(int i_RequirementPlateId)//LISTO
+    public DataTable GetDataManufacturedByPlate(int i_RequirementPlateId)
     {
       try
       {
@@ -3560,7 +3560,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int RequirementCallInsert(ArrayList arrFilter)////LISTO NO PROBADO
+    public int RequirementCallInsert(ArrayList arrFilter)
     {
       try
       {
@@ -3590,7 +3590,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetDetailbyProductDelivery(int i_ProductId)//LISTO
+    public DataTable GetDetailbyProductDelivery(int i_ProductId)
     {
       try
       {
@@ -3617,7 +3617,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int StockMovemenDeliverytInsertTransfer(string CodOrden)//LISTO NO PROBADO
+    public int StockMovemenDeliverytInsertTransfer(string CodOrden)
     {
       try
       {
@@ -3663,7 +3663,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int ValidateExistRequirementDelivery(int i_RequirementPlateId)//LISTO
+    public int ValidateExistRequirementDelivery(int i_RequirementPlateId)
     {
       try
       {
@@ -3690,7 +3690,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetRequirementTrazability()//NO DATA
+    public DataTable GetRequirementTrazability()
     {
       try
       {
@@ -3716,7 +3716,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetPreviousStatusRequirement(int i_RequirementPlateId)//LISTO
+    public DataTable GetPreviousStatusRequirement(int i_RequirementPlateId)
     {
       try
       {
@@ -3743,7 +3743,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetDataTrazabilityId(int i_RequirementPlateId)//LISTO
+    public DataTable GetDataTrazabilityId(int i_RequirementPlateId)
     {
       try
       {
@@ -3770,7 +3770,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetDataTrazabilityMasiveId(int i_RequirementId)//LISTO
+    public DataTable GetDataTrazabilityMasiveId(int i_RequirementId)
     {
       try
       {
@@ -3899,7 +3899,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetFabricatedPlateAlert()//EMAIL
+    public DataTable GetFabricatedPlateAlert()
     {
       try
       {
@@ -3925,7 +3925,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetAlertVehicleEmail()//NO DATA
+    public DataTable GetAlertVehicleEmail()
     {
       try
       {
@@ -3951,7 +3951,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetGestorRequirement(int i_GestorRequirementId, int i_TypeId)//NO DATA
+    public DataTable GetGestorRequirement(int i_GestorRequirementId, int i_TypeId)
     {
       try
       {
@@ -4052,7 +4052,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetConciliacionPlate(string v_PlateNew, int i_ActionId)//ERROR
+    public DataTable GetConciliacionPlate(string v_PlateNew, int i_ActionId)
     {
       try
       {
@@ -4080,7 +4080,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetDeliveryProduct()//LISTO
+    public DataTable GetDeliveryProduct()
     {
       try
       {
@@ -4106,7 +4106,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public string GetDeliveryProductOfDistrict(int i_DistrictId, int i_VehicleClasification)//LISTO
+    public string GetDeliveryProductOfDistrict(int i_DistrictId, int i_VehicleClasification)
     {
       try
       {
@@ -4134,7 +4134,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable SearchDeliveryData(int i_RequirementPlateId)//LISTO
+    public DataTable SearchDeliveryData(int i_RequirementPlateId)
     {
       Database instance = EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable dataTable = (DataTable) null;
@@ -4150,7 +4150,7 @@ namespace SIIV.Requirement.DA
       return dataTable;
     }
 
-    public int InsertPaymentLog(ArrayList arrFilter)//LISTO
+    public int InsertPaymentLog(ArrayList arrFilter)
     {
       try
       {
@@ -4182,7 +4182,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int UpdatePaymentLog(ArrayList arrFilter)//LISTO
+    public int UpdatePaymentLog(ArrayList arrFilter)
     {
       try
       {
@@ -4215,7 +4215,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int InsertServiceVisaLog(ArrayList arrFilter)//LISTO
+    public int InsertServiceVisaLog(ArrayList arrFilter)
     {
       try
       {
@@ -4245,7 +4245,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetPaymentLogById(int i_PaymentVisaLogId)//LISTO
+    public DataTable GetPaymentLogById(int i_PaymentVisaLogId)
     {
       Database instance = EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable paymentLogById;
@@ -4261,7 +4261,7 @@ namespace SIIV.Requirement.DA
       return paymentLogById;
     }
 
-    public DataTable GetServiceVisaLogByPaymentCode(string s_PaymentCode)//NO EXISTE
+    public DataTable GetServiceVisaLogByPaymentCode(string s_PaymentCode)
     {
       Database instance = EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable logByPaymentCode;
@@ -4277,7 +4277,7 @@ namespace SIIV.Requirement.DA
       return logByPaymentCode;
     }
 
-    public string GetPlatebyRequirementPlateId(int iRequirementPlateId)//LISTO
+    public string GetPlatebyRequirementPlateId(int iRequirementPlateId)
     {
       Database instance = EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable dataTable;
@@ -4293,7 +4293,7 @@ namespace SIIV.Requirement.DA
       return dataTable.Rows[0]["v_PlateNew"].ToString();
     }
 
-    public DataTable ConciliarRequirementPlatebyId(int iRequirementPlateId)//LISTO
+    public DataTable ConciliarRequirementPlatebyId(int iRequirementPlateId)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable dataTable;
@@ -4309,7 +4309,7 @@ namespace SIIV.Requirement.DA
       return dataTable;
     }
 
-    public DataTable GeneratePaymentCodebyRequirementId(int iRequirementId)//LISTO
+    public DataTable GeneratePaymentCodebyRequirementId(int iRequirementId)
     {
       SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
       DataTable codebyRequirementId;
@@ -4336,6 +4336,22 @@ namespace SIIV.Requirement.DA
         using (IDataReader reader = instance.ExecuteReader(storedProcCommand))
           new DataTable().Load(reader);
       }
+    }
+
+    public DataTable GetServiceByUserRole(string RoleId)
+    {
+      SqlDatabase instance = (SqlDatabase) EnterpriseLibraryContainer.Current.GetInstance<Database>(this.cadenaConexion);
+      DataTable serviceByUserRole;
+      using (DbCommand storedProcCommand = instance.GetStoredProcCommand("[Common].[usp_GetUserServiceByRole]"))
+      {
+        instance.AddInParameter(storedProcCommand, nameof (RoleId), DbType.String, (object) RoleId);
+        using (IDataReader reader = instance.ExecuteReader(storedProcCommand))
+        {
+          serviceByUserRole = new DataTable();
+          serviceByUserRole.Load(reader);
+        }
+      }
+      return serviceByUserRole;
     }
   }
 }

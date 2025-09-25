@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.WebApp.Exhibition.Production.SpecialProductionPlateDetail
 // Assembly: SIIV.WebApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 7AA326CF-267A-4A0D-8292-415B064D285A
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.WebApp.dll
+// MVID: 0F87038C-530E-41EF-B2A6-8BD0592819DD
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.WebApp.dll
 
 using AjaxControlToolkit;
 using SIIV.BE;
@@ -137,7 +137,8 @@ namespace SIIV.WebApp.Exhibition.Production
           int32 = Convert.ToInt32(this.txtSerieIni.Text);
           num = Convert.ToInt32(this.txtSerieFin.Text);
         }
-        
+        if (num < int32)
+          throw new HandledException(1, "Número de Serie Final debe ser mayor o igual al Número de Serie Inicial");
         for (int index = int32; index <= num; ++index)
         {
           string str = this.cboSerie.SelectedItem.Text + index.ToString().PadLeft(3, '0');
@@ -241,7 +242,6 @@ namespace SIIV.WebApp.Exhibition.Production
         this.dtSpecialPlateProductionDetail = (DataTable) this.ViewState["dtSpecialPlateProductionDetail"];
         if (this.dtSpecialPlateProductionDetail.Rows.Count == 0)
           throw new HandledException(1, "Debe ingresar las Placas a Fabricar");
-
         SystemUser systemUser = this.Session["SystemUser"] != null ? (SystemUser) this.Session["SystemUser"] : throw new HandledException(3, "La sesión ha expirado.", "'SystemUser' - SpecialProductionPlateDetail.aspx");
         XElement xelement = new XElement((XName) "SpecialPlateProduction", new object[8]
         {
@@ -505,6 +505,8 @@ namespace SIIV.WebApp.Exhibition.Production
           string str2 = str1.Substring(3, 3);
           Convert.ToInt32(this.Request.QueryString["SpecialPlateTypeId"].ToString());
           this.cboSerie.SelectedIndex = this.cboSerie.Items.IndexOf(this.cboSerie.Items.FindByText(text));
+          if (Convert.ToInt32(this.cboSerie.SelectedValue) == -1)
+            throw new HandledException(1, "Por Favor, Debe seleccionar la serie");
           this.txtSerieIni.Text = str2;
           this.txtSerieFin.Text = str2;
           this.wibNew_Click((object) null, (EventArgs) null);

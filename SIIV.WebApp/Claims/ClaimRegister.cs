@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.WebApp.Claims.ClaimRegister
 // Assembly: SIIV.WebApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 7AA326CF-267A-4A0D-8292-415B064D285A
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.WebApp.dll
+// MVID: 0F87038C-530E-41EF-B2A6-8BD0592819DD
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.WebApp.dll
 
 using SIIV.BE;
 using SIIV.Claim.BL;
@@ -356,7 +356,7 @@ namespace SIIV.WebApp.Claims
           this.spanRegulariceMovementForDeliver.Style.Add("display", "");
           this.Panel2.Visible = true;
           break;
-        case enmClaimType.UpdateApplicantData:
+        case enmClaimType.CallCenter | enmClaimType.BookClaim:
           this.spanRequirementData.Style.Add("display", "");
           this.Panel2.Visible = true;
           this.rblTypePetitory.Visible = true;
@@ -763,7 +763,7 @@ namespace SIIV.WebApp.Claims
               break;
             }
             break;
-          case enmClaimType.UpdateApplicantData:
+          case enmClaimType.CallCenter | enmClaimType.BookClaim:
             if (!this.RequirementData1.CompletedData)
             {
               pstrMessage = "***Advertencia</br>Debe completar todos los datos de la sección de \"Datos de nuevo solicitante\".";
@@ -801,7 +801,7 @@ namespace SIIV.WebApp.Claims
           case enmClaimType.UseChange:
             pstrMessage = this.ValidateDataRequester();
             break;
-          case enmClaimType.UpdateApplicantData:
+          case enmClaimType.CallCenter | enmClaimType.BookClaim:
             pstrMessage = this.RequirementData1.ValidateDataRequester();
             break;
         }

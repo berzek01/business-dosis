@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.Requirement.BL.RequirementQueriesBL
 // Assembly: SIIV.Requirement.BL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 6CDA977C-9E81-4503-829A-9DEDC12E0F36
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.Requirement.BL.dll
+// MVID: FE9A2D44-C606-41EA-8453-9569E774C3D1
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.Requirement.BL.dll
 
 using SIIV.Requirement.DA;
 using System;
@@ -144,22 +144,22 @@ namespace SIIV.Requirement.BL
       return this.objRequirementQueriesDA.ValidateExistRequirementByPlateTitle(pstrPlateNumber, pstrTitle);
     }
 
-    public DataTable SunarpDataRead(string pstrPlateNumber, string pstrTitle, bool irol = false)
+    public DataTable SunarpDataRead(string pstrPlateNumber, string pstrTitle, int irol = 0)
     {
       return this.objRequirementQueriesDA.SunarpDataRead(pstrPlateNumber, pstrTitle, irol);
     }
 
-    public DataTable SunarpDataReadbyId(int pintVehicleId, bool irol = false)
+    public DataTable SunarpDataReadbyId(int pintVehicleId, int irol = 0)
     {
       return this.objRequirementQueriesDA.SunarpDataReadbyId(pintVehicleId, irol);
     }
 
-    public DataTable SunarpDataRead3rd(string pstrPlateNumber, bool irol = false)
+    public DataTable SunarpDataRead3rd(string pstrPlateNumber, int irol = 0)
     {
       return this.objRequirementQueriesDA.SunarpDataRead3rd(pstrPlateNumber, irol);
     }
 
-    public DataTable SunarpDataReadChangeUse(string pstrPlateNumber, bool irol = false)
+    public DataTable SunarpDataReadChangeUse(string pstrPlateNumber, int irol = 0)
     {
       return this.objRequirementQueriesDA.SunarpDataReadChangeUse(pstrPlateNumber, irol);
     }
@@ -261,7 +261,7 @@ namespace SIIV.Requirement.BL
       return this.objRequirementQueriesDA.VerifyProcess3rdPlate(pstrPlateNumber);
     }
 
-    public DataTable ValidateProductPrice3rd(string pstrPlateNumber, bool irol = false)
+    public DataTable ValidateProductPrice3rd(string pstrPlateNumber, int irol = 0)
     {
       return this.objRequirementQueriesDA.ValidateProductPrice3rd(pstrPlateNumber, irol);
     }
@@ -1268,6 +1268,11 @@ namespace SIIV.Requirement.BL
     public void RegisterConciliacionAudit(string vDetails, int iuserId, string vResult)
     {
       this.objRequirementQueriesDA.RegisterConciliacionAudit(vDetails, iuserId, vResult);
+    }
+
+    public DataTable GetServiceByUserRole(string RoleId)
+    {
+      return this.objRequirementQueriesDA.GetServiceByUserRole(RoleId);
     }
   }
 }

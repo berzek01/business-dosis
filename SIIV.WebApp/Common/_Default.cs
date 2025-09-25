@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.WebApp.Common._Default
 // Assembly: SIIV.WebApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 7AA326CF-267A-4A0D-8292-415B064D285A
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.WebApp.dll
+// MVID: 0F87038C-530E-41EF-B2A6-8BD0592819DD
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.WebApp.dll
 
 using SIIV.BE;
 using SIIV.Common.Resource;
@@ -91,9 +91,9 @@ namespace SIIV.WebApp.Common
                 Convert.ToDateTime(dataTable3.Rows[0]["d_StartDate"].ToString());
                 Convert.ToDateTime(dataTable3.Rows[0]["d_FinishDate"].ToString());
                 if (i_CustomerTypeId == "7")
-                  this.CreatePopUpServer("", "../Exhibicion/Operation/GeneralStatement.aspx?i_CustomerTypeId=" + i_CustomerTypeId + "&i_param=1&fecRenovation=" + str, "582px", "392px");
+                  this.CreatePopUpServer1("", "../Exhibicion/Operation/GeneralStatement5.aspx?i_CustomerTypeId=" + i_CustomerTypeId + "&i_param=1&fecRenovation=" + str, "582px", "392px");
                 else
-                  this.CreatePopUpServer("", "../Exhibicion/Operation/GeneralStatement4.aspx?i_CustomerTypeId=" + i_CustomerTypeId + "&fecRenovation=" + str + "&i_param=1", "455px", "560px");
+                  this.CreatePopUpServer1("", "../Exhibicion/Operation/GeneralStatement5.aspx?i_CustomerTypeId=" + i_CustomerTypeId + "&fecRenovation=" + str + "&i_param=1", "582px", "392px");
               }
             }
           }

@@ -1,10 +1,10 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
-  <!--Project was exported from assembly: D:\SGPR\BK-Placas\Placas\bin\SIIV.Requirement.BL.dll-->
+  <!--Project was exported from assembly: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.Requirement.BL.dll-->
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{D2E03CA6-EFD5-4905-BD52-94EA180D03EA}</ProjectGuid>
+    <ProjectGuid>{488FAE9B-266F-40CB-B1F6-A246DEDCB0B9}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AssemblyName>SIIV.Requirement.BL</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
@@ -33,12 +33,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="SIIV.BE">
-      <HintPath>lib\SIIV.BE.dll</HintPath>
-    </Reference>
-    <Reference Include="SIIV.Requirement.DA">
-      <HintPath>lib\SIIV.Requirement.DA.dll</HintPath>
-    </Reference>
+    <Reference Include="SIIV.BE" />
+    <Reference Include="SIIV.Requirement.DA" />
     <Reference Include="System.Data" />
     <Reference Include="System.Transactions" />
   </ItemGroup>

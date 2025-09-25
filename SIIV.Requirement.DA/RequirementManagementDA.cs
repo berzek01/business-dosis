@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.Requirement.DA.RequirementManagementDA
 // Assembly: SIIV.Requirement.DA, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 3193B483-1C99-47A3-B806-34369171C902
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.Requirement.DA.dll
+// MVID: 4532E3C2-7D38-4E0C-8CE9-E0E8FA4FAED3
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.Requirement.DA.dll
 
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Data;
@@ -26,7 +26,7 @@ namespace SIIV.Requirement.DA
 
     public int RequirementDeliveryFinishUpdate(
       SIIV.BE.Requirement pobjRequirement,
-      RequirementContributor pobjBenificiary)//LISTO
+      RequirementContributor pobjBenificiary)
     {
       try
       {
@@ -881,7 +881,7 @@ namespace SIIV.Requirement.DA
       int i_MotiveMovementId,
       int i_InsertUserId,
       string v_Observacion,
-      double f_Amount)//LISTO ???
+      double f_Amount)
     {
       try
       {
@@ -912,7 +912,7 @@ namespace SIIV.Requirement.DA
       int pintLocationId,
       DateTime dt_DateInicio,
       DateTime dt_DateFin,
-      string strvdays)//LISTO ???
+      string strvdays)
     {
       try
       {
@@ -937,7 +937,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public int ExceptionDeliveryDelete(int pintExceptionDeliveryId, int i_SystemUserId)//LISTO ???
+    public int ExceptionDeliveryDelete(int pintExceptionDeliveryId, int i_SystemUserId)
     {
       int num = 0;
       try
@@ -983,7 +983,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public void EBillingCashProcess(int pintRequirementId, int pintStatus, int pintSystemUserId)//LISTO
+    public void EBillingCashProcess(int pintRequirementId, int pintStatus, int pintSystemUserId)
     {
       try
       {
@@ -1002,7 +1002,7 @@ namespace SIIV.Requirement.DA
       }
     }
 
-    public DataTable GetEmailRetailAnulate(int pintRequirementId, int pintInsertUserId)//LISTO ???
+    public DataTable GetEmailRetailAnulate(int pintRequirementId, int pintInsertUserId)
     {
       try
       {
@@ -1398,7 +1398,7 @@ namespace SIIV.Requirement.DA
       int i_flag,
       int startRowIndex,
       int maxRows,
-      out int pinttotalRows)//LISTO ???
+      out int pinttotalRows)
     {
       try
       {

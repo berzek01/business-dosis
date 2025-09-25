@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.WebApp.Retail.RegisterPayment
 // Assembly: SIIV.WebApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 7AA326CF-267A-4A0D-8292-415B064D285A
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.WebApp.dll
+// MVID: 0F87038C-530E-41EF-B2A6-8BD0592819DD
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.WebApp.dll
 
 using AjaxControlToolkit;
 using SIIV.BE;
@@ -262,7 +262,7 @@ namespace SIIV.WebApp.Retail
       try
       {
         this.lblMessage2.Visible = false;
-        if (this.rbTypePayment.SelectedIndex == 0)
+        if (this.rbTypePayment.SelectedValue == "0")
         {
           if (this.TxtPayTotal.Text.Trim() == "")
           {
@@ -285,7 +285,7 @@ namespace SIIV.WebApp.Retail
         if (new RequirementManagementBL().RegisterEBillingData(Convert.ToInt32(this.Session["i_CashRegId"].ToString()), Convert.ToInt32(this.ViewState["intRequirementID"]), 1, 1, Convert.ToInt32(systemUser.i_SystemUserId)))
         {
           bool flag;
-          if (this.rbTypePayment.SelectedIndex == 0)
+          if (this.rbTypePayment.SelectedValue == "0")
           {
             flag = new RequirementManagementBL().EBillingStatusProcess(Convert.ToInt32(this.ViewState["intRequirementID"]), 99, Convert.ToDouble(this.TxtPayTotal.Text.Trim()));
             new RequirementManagementBL().EBillingCashProcess(Convert.ToInt32(this.ViewState["intRequirementID"]), 1, systemUser.i_SystemUserId);
@@ -539,26 +539,14 @@ namespace SIIV.WebApp.Retail
 
     protected void rbTypePament_SelectedIndexChanged(object sender, EventArgs e)
     {
-      if (this.rbTypePayment.SelectedValue == "0")
-      {
-        this.divVisa.Visible = true;
-        this.divVisa2.Visible = false;
-        double num = Convert.ToDouble(this.Session["Monto"]);
-        this.Session["MontoTotal"] = (object) num;
-        this.lblTotalAPagar2.Text = num.ToString();
-        this.lblMessage2.Visible = false;
-      }
-      else
-      {
-        this.divVisa.Visible = false;
-        this.divVisa2.Visible = true;
-        double num1 = Convert.ToDouble(this.ViewState["RequirementMonto"]);
-        double num2 = num1 - Convert.ToDouble(this.Session["Monto"]);
-        this.Session["MontoTotal"] = (object) num1;
-        this.lblComision.Text = Math.Round(num2, 2).ToString();
-        this.lblTotalAPagar.Text = Math.Round(num1, 2).ToString();
-        this.lblMessage2.Visible = false;
-      }
+      this.divVisa.Visible = false;
+      this.divVisa2.Visible = true;
+      double num1 = Convert.ToDouble(this.ViewState["RequirementMonto"]);
+      double num2 = num1 - Convert.ToDouble(this.Session["Monto"]);
+      this.Session["MontoTotal"] = (object) num1;
+      this.lblComision.Text = Math.Round(num2, 2).ToString();
+      this.lblTotalAPagar.Text = Math.Round(num1, 2).ToString();
+      this.lblMessage2.Visible = false;
     }
 
     protected void Wizard1_NextButtonClick(object sender, WizardNavigationEventArgs e)
@@ -569,7 +557,7 @@ namespace SIIV.WebApp.Retail
     {
       if (this.Session["i_CashRegId"] != null)
       {
-        this.rbTypePayment.SelectedIndex = 1;
+        this.rbTypePayment.SelectedValue = "1";
         this.rbTypePament_SelectedIndexChanged((object) null, (EventArgs) null);
         this.btnPrevious = this.GetControlFromWizard(this.Wizard1, RegisterPayment.WizardNavigationTempContainer.FinishNavigationTemplateContainerID, "btnPrevious") as Button;
         this.btnPrevious.Visible = false;

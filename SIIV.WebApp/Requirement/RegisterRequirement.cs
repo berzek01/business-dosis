@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.WebApp.Requirement.RegisterRequirement
 // Assembly: SIIV.WebApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 7AA326CF-267A-4A0D-8292-415B064D285A
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.WebApp.dll
+// MVID: 0F87038C-530E-41EF-B2A6-8BD0592819DD
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.WebApp.dll
 
 using AjaxControlToolkit;
 using Microsoft.CSharp.RuntimeBinder;
@@ -22,7 +22,6 @@ using System.Configuration;
 using System.Data;
 using System.Globalization;
 using System.IO;
-using System.Linq;
 using System.Net;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -57,6 +56,8 @@ namespace SIIV.WebApp.Requirement
     private Button btnFinish;
     private Button btnCancel;
     private bool isRegisterCall = false;
+    private int TypeService;
+    private int ProductServiceId;
     private int StatusCallCenter;
     private int RucValidation;
     private int TypeApplicant;
@@ -330,14 +331,14 @@ namespace SIIV.WebApp.Requirement
       this.RucValidation = int.Parse(ConfigurationManager.AppSettings["RucValidation"]);
       if (this.RucValidation == 1 && this.CboDocumentType.SelectedValue == "4" && this.ViewState["ValidationRUC"] != null && (int) this.ViewState["ValidationRUC"] == 1)
         this.txtBeneficiaryName.Enabled = false;
-      string str = systemUser.i_RoleConfigId.ToString();
-      this.isRegisterCall = ((IEnumerable<string>) new SystemParameterQueriesBL().GetbyFilter(new ArrayList()
+      DataTable serviceByUserRole = new RequirementQueriesBL().GetServiceByUserRole(systemUser.i_RoleConfigId.ToString());
+      if (serviceByUserRole.Rows.Count > 0)
       {
-        (object) SystemParameterGroups.RoleCall.ToString((IFormatProvider) CultureInfo.CurrentCulture),
-        (object) "",
-        (object) "1",
-        (object) "1"
-      }).Rows[0]["v_Value"].ToString().Split('|')).Contains<string>(str);
+        this.TypeService = Convert.ToInt32(serviceByUserRole.Rows[0]["Grupo"]);
+        this.ProductServiceId = Convert.ToInt32(serviceByUserRole.Rows[0]["ProductId"]);
+        if (this.TypeService > 0)
+          this.isRegisterCall = true;
+      }
       if (this.StatusCallCenter == 0)
         this.isRegisterCall = false;
       if (this.IsPostBack)
@@ -580,7 +581,7 @@ namespace SIIV.WebApp.Requirement
           new ValidatorRegularExpressionProofPaymentBL().ProofPaymentData(this.CboDocumentType.Text.Trim(), this.TxtDocNumberProofPaper.Text.Trim(), this.txtBeneficiaryName.Text.Trim(), this.txtAddress.Text.Trim(), this.txtBeneficiaryMail.Text.Trim());
           if (this.isRegisterCall)
           {
-            DataTable priceServiceDelivery = new RequirementQueriesBL().GetPriceServiceDelivery(471, 0);
+            DataTable priceServiceDelivery = new RequirementQueriesBL().GetPriceServiceDelivery(this.ProductServiceId, 0);
             if (Convert.ToInt16(this.ViewState["VehicleClassId"].ToString()) != (short) 5)
             {
               this.chkServi3.Checked = true;
@@ -756,9 +757,9 @@ namespace SIIV.WebApp.Requirement
           if (this.Session["ProcessId"] == null)
             throw new HandledException(0, SIIV.SystemParameter.BL.Constants.REQUIREMENT_ERROR_GENERICO);
           if ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) == Convert.ToInt32((object) enmProccessType.Inmatriculacion) || Convert.ToInt16(this.Session["ProcessId"].ToString()) == (short) 2 || Convert.ToInt16(this.Session["ProcessId"].ToString()) == (short) 3 || Convert.ToInt16(this.Session["ProcessId"].ToString()) == (short) 7)
-            dataTable1 = !this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value)) : (!this.chkYes.Checked || this.StatusCallCenter != 2 ? new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value), this.isRegisterCall) : new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value)));
+            dataTable1 = !this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value)) : (!this.chkYes.Checked || this.StatusCallCenter != 2 ? new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value), this.TypeService) : new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value)));
           else if ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) == Convert.ToInt32((object) enmProccessType.CambioUso))
-            dataTable1 = !this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()) : (!this.chkYes.Checked || this.StatusCallCenter != 2 ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim(), this.isRegisterCall) : new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()));
+            dataTable1 = !this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()) : (!this.chkYes.Checked || this.StatusCallCenter != 2 ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim(), this.TypeService) : new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()));
           else if ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) == Convert.ToInt32((object) enmProccessType.CambioUsoRectificacion))
           {
             if (this.Session["VehicleIdClaim"] != null)
@@ -768,7 +769,7 @@ namespace SIIV.WebApp.Requirement
             }
           }
           else
-            dataTable1 = !this.isRegisterCall ? new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber1.Text.Trim()) : (!this.chkYes.Checked || this.StatusCallCenter != 2 ? new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber1.Text.Trim(), this.isRegisterCall) : new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber1.Text.Trim()));
+            dataTable1 = !this.isRegisterCall ? new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber1.Text.Trim()) : (!this.chkYes.Checked || this.StatusCallCenter != 2 ? new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber1.Text.Trim(), this.TypeService) : new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber1.Text.Trim()));
           this.objVehicleRegistrationDetail.i_RegistryOfficeId = new int?(Convert.ToInt32(dataTable1.Rows[0]["RegistryOfficeId"].ToString()));
           this.objVehicleRegistrationDetail.i_RegistryZoneId = new int?(Convert.ToInt32(dataTable1.Rows[0]["RegistryZoneId"].ToString()));
           this.objVehicleRegistrationDetail.i_VehicleCategoryId = !(dataTable1.Rows[0]["CategoryId"].ToString() != "") ? new int?() : new int?(Convert.ToInt32(dataTable1.Rows[0]["CategoryId"].ToString()));
@@ -876,7 +877,7 @@ namespace SIIV.WebApp.Requirement
           this.objContributorRequester = new RequirementContributor();
           if (this.Session["RequirementPlateType"] == null)
             throw new HandledException(0, SIIV.SystemParameter.BL.Constants.REQUIREMENT_ERROR_GENERICO);
-          if ((int) this.Session["RequirementPlateType"] == Convert.ToInt32((object) enmRequirementPlateType.Regular) && (int) this.ViewState["PublicUser"] == 1)
+          if ((int) this.Session["RequirementPlateType"] == Convert.ToInt32((object) enmRequirementPlateType.Regular) && (int) this.ViewState["PublicUser"] == 1 && (int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.Duplicado))
           {
             this.objContributorRequester.i_DocumentTypeId = this.objUserBE.i_DocumentTypeId;
             this.objContributorRequester.v_DocumentNumber = this.objUserBE.v_DocumentNumber;
@@ -1277,7 +1278,7 @@ namespace SIIV.WebApp.Requirement
         DataTable dataTable1 = new DataTable();
         if (this.Session["ProcessId"] == null)
           throw new HandledException(0, SIIV.SystemParameter.BL.Constants.REQUIREMENT_ERROR_GENERICO);
-        DataTable dtSunarpData = (int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.Inmatriculacion) && Convert.ToInt16(this.Session["ProcessId"].ToString()) != (short) 2 && Convert.ToInt16(this.Session["ProcessId"].ToString()) != (short) 3 && Convert.ToInt16(this.Session["ProcessId"].ToString()) != (short) 7 ? ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.CambioUso) ? new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber.Text.Trim()) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()) : new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim(), this.isRegisterCall))) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value)) : new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value), this.isRegisterCall));
+        DataTable dtSunarpData = (int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.Inmatriculacion) && Convert.ToInt16(this.Session["ProcessId"].ToString()) != (short) 2 && Convert.ToInt16(this.Session["ProcessId"].ToString()) != (short) 3 && Convert.ToInt16(this.Session["ProcessId"].ToString()) != (short) 7 ? ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.CambioUso) ? new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber.Text.Trim()) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()) : new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim(), this.TypeService))) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value)) : new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value), this.TypeService));
         string str2 = dtSunarpData.Rows[0]["v_PlateOld"].ToString();
         if (this.Session["ProcessId"] == null)
           throw new HandledException(0, SIIV.SystemParameter.BL.Constants.REQUIREMENT_ERROR_GENERICO);
@@ -1472,7 +1473,7 @@ namespace SIIV.WebApp.Requirement
         if (new RequirementQueriesBL().GetCantDeliveryServices(this.objUserBE.i_SystemUserId) > 4)
           throw new HandledException(0, SIIV.SystemParameter.BL.Constants.REQUIREMENT_DETRACTION);
         this.chkNo.Checked = false;
-        DataTable priceServiceDelivery1 = new RequirementQueriesBL().GetPriceServiceDelivery(471, 0);
+        DataTable priceServiceDelivery1 = new RequirementQueriesBL().GetPriceServiceDelivery(this.ProductServiceId, 0);
         if (this.isRegisterCall)
         {
           if (this.StatusCallCenter == 1)
@@ -1569,7 +1570,7 @@ namespace SIIV.WebApp.Requirement
         this.trAdditionalProducts.Visible = true;
         this.txtTotal.Text = Convert.ToDecimal(string.Format("{0:F2}", (object) Convert.ToDouble(this.hdiPrice.Value))).ToString();
         this.ViewState["f_PriceCostF"] = (object) Convert.ToDouble(this.ViewState["f_PriceCost"]);
-        DataTable priceServiceDelivery = new RequirementQueriesBL().GetPriceServiceDelivery(471, 0);
+        DataTable priceServiceDelivery = new RequirementQueriesBL().GetPriceServiceDelivery(this.ProductServiceId, 0);
         if (Convert.ToInt16(this.ViewState["VehicleClassId"].ToString()) != (short) 5)
         {
           if (this.isRegisterCall)
@@ -1691,7 +1692,7 @@ namespace SIIV.WebApp.Requirement
       double num = Convert.ToDouble(this.hdiPrice.Value.ToString());
       short int16 = Convert.ToInt16(this.Session["ProcessId"].ToString());
       DataTable dataTable = new DataTable();
-      int productCorrespondence = new RequirementQueriesBL().GetProductCorrespondence(Convert.ToInt32((int16 != (short) 7 && int16 != (short) 1 && int16 != (short) 3 && (int) int16 != Convert.ToInt32((object) enmProccessType.Inmatriculacion) && int16 != (short) 2 ? ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.CambioUso) ? new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber.Text.Trim()) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()) : new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim(), this.isRegisterCall))) : new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value))).Rows[0]["i_ProductId"].ToString()), iProductIdDelivery);
+      int productCorrespondence = new RequirementQueriesBL().GetProductCorrespondence(Convert.ToInt32((int16 != (short) 7 && int16 != (short) 1 && int16 != (short) 3 && (int) int16 != Convert.ToInt32((object) enmProccessType.Inmatriculacion) && int16 != (short) 2 ? ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.CambioUso) ? new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber.Text.Trim()) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()) : new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim(), this.TypeService))) : new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value))).Rows[0]["i_ProductId"].ToString()), iProductIdDelivery);
       this.lblProductDescription.Text = new RequirementQueriesBL().GetDescriptionProduct(productCorrespondence);
       DataTable priceServiceDelivery = new RequirementQueriesBL().GetPriceServiceDelivery(productCorrespondence, iProductIdDelivery);
       this.lblPriceProducto.Text = priceServiceDelivery.Rows[0]["f_PriceProduct"].ToString();
@@ -2183,7 +2184,7 @@ namespace SIIV.WebApp.Requirement
         DataTable dataTable;
         if (this.isRegisterCall)
         {
-          dataTable = new RequirementQueriesBL().SunarpDataRead(strPlateNumber, strTitle, this.isRegisterCall);
+          dataTable = new RequirementQueriesBL().SunarpDataRead(strPlateNumber, strTitle, this.TypeService);
           if (this.StatusCallCenter == 2)
             this.Session["hdiPrice3"] = (object) new RequirementQueriesBL().SunarpDataRead(strPlateNumber, strTitle).Rows[0]["f_PriceSale"].ToString();
         }
@@ -2745,7 +2746,7 @@ namespace SIIV.WebApp.Requirement
               this.getDistrictbyClasification(1);
               short int16 = Convert.ToInt16(this.Session["ProcessId"].ToString());
               DataTable dataTable2 = new DataTable();
-              int productCorrespondence = new RequirementQueriesBL().GetProductCorrespondence(Convert.ToInt32((int16 != (short) 7 && int16 != (short) 1 && int16 != (short) 3 && (int) int16 != Convert.ToInt32((object) enmProccessType.Inmatriculacion) && int16 != (short) 2 ? ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.CambioUso) ? new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber.Text.Trim()) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()) : new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim(), this.isRegisterCall))) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value)) : new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value), this.isRegisterCall))).Rows[0]["i_ProductId"].ToString()), int32_3);
+              int productCorrespondence = new RequirementQueriesBL().GetProductCorrespondence(Convert.ToInt32((int16 != (short) 7 && int16 != (short) 1 && int16 != (short) 3 && (int) int16 != Convert.ToInt32((object) enmProccessType.Inmatriculacion) && int16 != (short) 2 ? ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.CambioUso) ? new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber.Text.Trim()) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()) : new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim(), this.TypeService))) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value)) : new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value), this.TypeService))).Rows[0]["i_ProductId"].ToString()), int32_3);
               this.ViewState["i_ProductId"] = (object) productCorrespondence;
               if (productCorrespondence != 0)
               {
@@ -2781,7 +2782,7 @@ namespace SIIV.WebApp.Requirement
             this.getDistrictbyClasification(2);
             short int16 = Convert.ToInt16(this.Session["ProcessId"].ToString());
             DataTable dataTable3 = new DataTable();
-            int productCorrespondence = new RequirementQueriesBL().GetProductCorrespondence(Convert.ToInt32((int16 != (short) 7 && int16 != (short) 1 && int16 != (short) 3 && (int) int16 != Convert.ToInt32((object) enmProccessType.Inmatriculacion) && int16 != (short) 2 ? ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.CambioUso) ? new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber.Text.Trim()) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()) : new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim(), this.isRegisterCall))) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value)) : new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value), this.isRegisterCall))).Rows[0]["i_ProductId"].ToString()), int32_4);
+            int productCorrespondence = new RequirementQueriesBL().GetProductCorrespondence(Convert.ToInt32((int16 != (short) 7 && int16 != (short) 1 && int16 != (short) 3 && (int) int16 != Convert.ToInt32((object) enmProccessType.Inmatriculacion) && int16 != (short) 2 ? ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.CambioUso) ? new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber.Text.Trim()) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()) : new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim(), this.TypeService))) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value)) : new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value), this.TypeService))).Rows[0]["i_ProductId"].ToString()), int32_4);
             this.ViewState["i_ProductId"] = (object) productCorrespondence;
             if (productCorrespondence != 0)
             {
@@ -2945,7 +2946,7 @@ namespace SIIV.WebApp.Requirement
         DataTable dataTable1 = new DataTable();
         if (this.Session["ProcessId"] != null)
         {
-          DataTable dataTable2 = (int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.Inmatriculacion) && Convert.ToInt16(this.Session["ProcessId"].ToString()) != (short) 2 && Convert.ToInt16(this.Session["ProcessId"].ToString()) != (short) 3 && Convert.ToInt16(this.Session["ProcessId"].ToString()) != (short) 7 ? ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.CambioUso) ? new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber1.Text.Trim()) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()) : new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim(), this.isRegisterCall))) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value)) : new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value), this.isRegisterCall));
+          DataTable dataTable2 = (int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.Inmatriculacion) && Convert.ToInt16(this.Session["ProcessId"].ToString()) != (short) 2 && Convert.ToInt16(this.Session["ProcessId"].ToString()) != (short) 3 && Convert.ToInt16(this.Session["ProcessId"].ToString()) != (short) 7 ? ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) != Convert.ToInt32((object) enmProccessType.CambioUso) ? new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber1.Text.Trim()) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()) : new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim(), this.TypeService))) : (!this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value)) : new RequirementQueriesBL().SunarpDataReadbyId(Convert.ToInt32(this.hidSunarpId.Value), this.TypeService));
           if (dataTable2.Rows.Count <= 0)
             throw new HandledException(0, SIIV.SystemParameter.BL.Constants.REQUIREMENT_ERROR_GENERICO);
           string pstrPlateNumber = dataTable2.Rows[0]["v_platenew"].ToString();
@@ -3106,7 +3107,7 @@ namespace SIIV.WebApp.Requirement
         {
           if ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) == Convert.ToInt32((object) enmProccessType.CambioUso))
           {
-            dataTable1 = !this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()) : new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim(), this.isRegisterCall);
+            dataTable1 = !this.isRegisterCall ? new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim()) : new RequirementQueriesBL().SunarpDataReadChangeUse(this.txtPlateNumber.Text.Trim(), this.TypeService);
             this.lblPrice.Visible = false;
             this.txtPrice3rd.Visible = false;
             if (dataTable1.Rows.Count > 0)
@@ -3145,7 +3146,7 @@ namespace SIIV.WebApp.Requirement
           }
           else if (this.isRegisterCall)
           {
-            dataTable1 = new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber1.Text.Trim(), this.isRegisterCall);
+            dataTable1 = new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber1.Text.Trim(), this.TypeService);
             if (this.StatusCallCenter == 2)
               this.Session["hdiPrice3"] = (object) new RequirementQueriesBL().SunarpDataRead3rd(this.txtPlateNumber1.Text.Trim()).Rows[0]["f_PriceSale"].ToString();
           }
@@ -3176,111 +3177,111 @@ namespace SIIV.WebApp.Requirement
           (object) "1"
         })));
         // ISSUE: reference to a compiler-generated field
-        if (RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__1 == null)
+        if (RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__1 == null)
         {
           // ISSUE: reference to a compiler-generated field
-          RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__1 = CallSite<Func<CallSite, Type, object, object>>.Create(Binder.InvokeMember(CSharpBinderFlags.None, "ToString", (IEnumerable<Type>) null, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[2]
+          RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__1 = CallSite<Func<CallSite, Type, object, object>>.Create(Binder.InvokeMember(CSharpBinderFlags.None, "ToString", (IEnumerable<Type>) null, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[2]
           {
             CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType | CSharpArgumentInfoFlags.IsStaticType, (string) null),
             CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null)
           }));
         }
         // ISSUE: reference to a compiler-generated field
-        Func<CallSite, Type, object, object> target1 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__1.Target;
+        Func<CallSite, Type, object, object> target1 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__1.Target;
         // ISSUE: reference to a compiler-generated field
-        CallSite<Func<CallSite, Type, object, object>> p1 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__1;
+        CallSite<Func<CallSite, Type, object, object>> p1 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__1;
         Type type1 = typeof (Convert);
         // ISSUE: reference to a compiler-generated field
-        if (RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__0 == null)
+        if (RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__0 == null)
         {
           // ISSUE: reference to a compiler-generated field
-          RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__0 = CallSite<Func<CallSite, object, object>>.Create(Binder.GetMember(CSharpBinderFlags.None, "v_Value", typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
+          RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__0 = CallSite<Func<CallSite, object, object>>.Create(Binder.GetMember(CSharpBinderFlags.None, "v_Value", typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
           {
             CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null)
           }));
         }
         // ISSUE: reference to a compiler-generated field
         // ISSUE: reference to a compiler-generated field
-        object obj2 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__0.Target((CallSite) RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__0, objectList[0]);
+        object obj2 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__0.Target((CallSite) RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__0, objectList[0]);
         object obj3 = target1((CallSite) p1, type1, obj2);
         // ISSUE: reference to a compiler-generated field
-        if (RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__7 == null)
+        if (RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__7 == null)
         {
           // ISSUE: reference to a compiler-generated field
-          RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__7 = CallSite<Func<CallSite, object, IEnumerable>>.Create(Binder.Convert(CSharpBinderFlags.None, typeof (IEnumerable), typeof (RegisterRequirement)));
+          RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__7 = CallSite<Func<CallSite, object, IEnumerable>>.Create(Binder.Convert(CSharpBinderFlags.None, typeof (IEnumerable), typeof (RegisterRequirement)));
         }
         // ISSUE: reference to a compiler-generated field
         // ISSUE: reference to a compiler-generated field
-        foreach (object obj4 in RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__7.Target((CallSite) RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__7, obj1))
+        foreach (object obj4 in RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__7.Target((CallSite) RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__7, obj1))
         {
           // ISSUE: reference to a compiler-generated field
-          if (RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__6 == null)
+          if (RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__6 == null)
           {
             // ISSUE: reference to a compiler-generated field
-            RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__6 = CallSite<Func<CallSite, object, bool>>.Create(Binder.UnaryOperation(CSharpBinderFlags.None, System.Linq.Expressions.ExpressionType.IsTrue, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
+            RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__6 = CallSite<Func<CallSite, object, bool>>.Create(Binder.UnaryOperation(CSharpBinderFlags.None, System.Linq.Expressions.ExpressionType.IsTrue, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
             {
               CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null)
             }));
           }
           // ISSUE: reference to a compiler-generated field
-          Func<CallSite, object, bool> target2 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__6.Target;
+          Func<CallSite, object, bool> target2 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__6.Target;
           // ISSUE: reference to a compiler-generated field
-          CallSite<Func<CallSite, object, bool>> p6 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__6;
+          CallSite<Func<CallSite, object, bool>> p6 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__6;
           // ISSUE: reference to a compiler-generated field
-          if (RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__5 == null)
+          if (RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__5 == null)
           {
             // ISSUE: reference to a compiler-generated field
-            RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__5 = CallSite<Func<CallSite, object, object>>.Create(Binder.UnaryOperation(CSharpBinderFlags.None, System.Linq.Expressions.ExpressionType.Not, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
+            RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__5 = CallSite<Func<CallSite, object, object>>.Create(Binder.UnaryOperation(CSharpBinderFlags.None, System.Linq.Expressions.ExpressionType.Not, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
             {
               CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null)
             }));
           }
           // ISSUE: reference to a compiler-generated field
-          Func<CallSite, object, object> target3 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__5.Target;
+          Func<CallSite, object, object> target3 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__5.Target;
           // ISSUE: reference to a compiler-generated field
-          CallSite<Func<CallSite, object, object>> p5 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__5;
+          CallSite<Func<CallSite, object, object>> p5 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__5;
           // ISSUE: reference to a compiler-generated field
-          if (RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__4 == null)
+          if (RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__4 == null)
           {
             // ISSUE: reference to a compiler-generated field
-            RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__4 = CallSite<Func<CallSite, object, object, object>>.Create(Binder.InvokeMember(CSharpBinderFlags.None, "Contains", (IEnumerable<Type>) null, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[2]
+            RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__4 = CallSite<Func<CallSite, object, object, object>>.Create(Binder.InvokeMember(CSharpBinderFlags.None, "Contains", (IEnumerable<Type>) null, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[2]
             {
               CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null),
               CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null)
             }));
           }
           // ISSUE: reference to a compiler-generated field
-          Func<CallSite, object, object, object> target4 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__4.Target;
+          Func<CallSite, object, object, object> target4 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__4.Target;
           // ISSUE: reference to a compiler-generated field
-          CallSite<Func<CallSite, object, object, object>> p4 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__4;
+          CallSite<Func<CallSite, object, object, object>> p4 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__4;
           object obj5 = obj3;
           // ISSUE: reference to a compiler-generated field
-          if (RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__3 == null)
+          if (RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__3 == null)
           {
             // ISSUE: reference to a compiler-generated field
-            RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__3 = CallSite<Func<CallSite, Type, object, object>>.Create(Binder.InvokeMember(CSharpBinderFlags.None, "ToString", (IEnumerable<Type>) null, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[2]
+            RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__3 = CallSite<Func<CallSite, Type, object, object>>.Create(Binder.InvokeMember(CSharpBinderFlags.None, "ToString", (IEnumerable<Type>) null, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[2]
             {
               CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType | CSharpArgumentInfoFlags.IsStaticType, (string) null),
               CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null)
             }));
           }
           // ISSUE: reference to a compiler-generated field
-          Func<CallSite, Type, object, object> target5 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__3.Target;
+          Func<CallSite, Type, object, object> target5 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__3.Target;
           // ISSUE: reference to a compiler-generated field
-          CallSite<Func<CallSite, Type, object, object>> p3 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__3;
+          CallSite<Func<CallSite, Type, object, object>> p3 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__3;
           Type type2 = typeof (Convert);
           // ISSUE: reference to a compiler-generated field
-          if (RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__2 == null)
+          if (RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__2 == null)
           {
             // ISSUE: reference to a compiler-generated field
-            RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__2 = CallSite<Func<CallSite, object, object>>.Create(Binder.GetMember(CSharpBinderFlags.None, "v_DocumentTypeId", typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
+            RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__2 = CallSite<Func<CallSite, object, object>>.Create(Binder.GetMember(CSharpBinderFlags.None, "v_DocumentTypeId", typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
             {
               CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null)
             }));
           }
           // ISSUE: reference to a compiler-generated field
           // ISSUE: reference to a compiler-generated field
-          object obj6 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__2.Target((CallSite) RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__2, obj4);
+          object obj6 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__2.Target((CallSite) RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__2, obj4);
           object obj7 = target5((CallSite) p3, type2, obj6);
           object obj8 = target4((CallSite) p4, obj5, obj7);
           object obj9 = target3((CallSite) p5, obj8);
@@ -3293,54 +3294,54 @@ namespace SIIV.WebApp.Requirement
         if (!flag1)
         {
           // ISSUE: reference to a compiler-generated field
-          if (RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__11 == null)
+          if (RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__11 == null)
           {
             // ISSUE: reference to a compiler-generated field
-            RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__11 = CallSite<Func<CallSite, object, IEnumerable>>.Create(Binder.Convert(CSharpBinderFlags.None, typeof (IEnumerable), typeof (RegisterRequirement)));
+            RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__11 = CallSite<Func<CallSite, object, IEnumerable>>.Create(Binder.Convert(CSharpBinderFlags.None, typeof (IEnumerable), typeof (RegisterRequirement)));
           }
           // ISSUE: reference to a compiler-generated field
           // ISSUE: reference to a compiler-generated field
-          foreach (object obj10 in RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__11.Target((CallSite) RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__11, obj1))
+          foreach (object obj10 in RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__11.Target((CallSite) RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__11, obj1))
           {
             // ISSUE: reference to a compiler-generated field
-            if (RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__10 == null)
+            if (RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__10 == null)
             {
               // ISSUE: reference to a compiler-generated field
-              RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__10 = CallSite<Func<CallSite, object, bool>>.Create(Binder.UnaryOperation(CSharpBinderFlags.None, System.Linq.Expressions.ExpressionType.IsTrue, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
+              RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__10 = CallSite<Func<CallSite, object, bool>>.Create(Binder.UnaryOperation(CSharpBinderFlags.None, System.Linq.Expressions.ExpressionType.IsTrue, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
               {
                 CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null)
               }));
             }
             // ISSUE: reference to a compiler-generated field
-            Func<CallSite, object, bool> target6 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__10.Target;
+            Func<CallSite, object, bool> target6 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__10.Target;
             // ISSUE: reference to a compiler-generated field
-            CallSite<Func<CallSite, object, bool>> p10 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__10;
+            CallSite<Func<CallSite, object, bool>> p10 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__10;
             // ISSUE: reference to a compiler-generated field
-            if (RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__9 == null)
+            if (RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__9 == null)
             {
               // ISSUE: reference to a compiler-generated field
-              RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__9 = CallSite<Func<CallSite, object, string, object>>.Create(Binder.BinaryOperation(CSharpBinderFlags.None, System.Linq.Expressions.ExpressionType.Equal, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[2]
+              RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__9 = CallSite<Func<CallSite, object, string, object>>.Create(Binder.BinaryOperation(CSharpBinderFlags.None, System.Linq.Expressions.ExpressionType.Equal, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[2]
               {
                 CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null),
                 CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType, (string) null)
               }));
             }
             // ISSUE: reference to a compiler-generated field
-            Func<CallSite, object, string, object> target7 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__9.Target;
+            Func<CallSite, object, string, object> target7 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__9.Target;
             // ISSUE: reference to a compiler-generated field
-            CallSite<Func<CallSite, object, string, object>> p9 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__9;
+            CallSite<Func<CallSite, object, string, object>> p9 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__9;
             // ISSUE: reference to a compiler-generated field
-            if (RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__8 == null)
+            if (RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__8 == null)
             {
               // ISSUE: reference to a compiler-generated field
-              RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__8 = CallSite<Func<CallSite, object, object>>.Create(Binder.GetMember(CSharpBinderFlags.None, "v_DocumentNumber", typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
+              RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__8 = CallSite<Func<CallSite, object, object>>.Create(Binder.GetMember(CSharpBinderFlags.None, "v_DocumentNumber", typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
               {
                 CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null)
               }));
             }
             // ISSUE: reference to a compiler-generated field
             // ISSUE: reference to a compiler-generated field
-            object obj11 = RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__8.Target((CallSite) RegisterRequirement.\u003C\u003Eo__79.\u003C\u003Ep__8, obj10);
+            object obj11 = RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__8.Target((CallSite) RegisterRequirement.\u003C\u003Eo__81.\u003C\u003Ep__8, obj10);
             string text = this.txtRequesterNumberDoc.Text;
             object obj12 = target7((CallSite) p9, obj11, text);
             if (target6((CallSite) p10, obj12))
@@ -3361,7 +3362,7 @@ namespace SIIV.WebApp.Requirement
         if ((int) Convert.ToInt16(this.Session["ProcessId"].ToString()) == Convert.ToInt32((object) enmProccessType.Duplicado3rd))
         {
           string pstrPlateNumber = this.txtPlateNumber1.Text.Replace("-", "");
-          DataTable dataTable3 = !this.isRegisterCall ? new RequirementQueriesBL().ValidateProductPrice3rd(pstrPlateNumber) : new RequirementQueriesBL().ValidateProductPrice3rd(pstrPlateNumber, this.isRegisterCall);
+          DataTable dataTable3 = !this.isRegisterCall ? new RequirementQueriesBL().ValidateProductPrice3rd(pstrPlateNumber) : new RequirementQueriesBL().ValidateProductPrice3rd(pstrPlateNumber, this.TypeService);
           this.ViewState["Product3rd"] = (object) dataTable3;
           this.txtPrice3rd.Text = dataTable3.Rows[0]["f_PriceSale"].ToString();
           this.ViewState["f_PriceCost"] = (object) dataTable3.Rows[0]["f_PriceCost"].ToString();
@@ -3979,63 +3980,63 @@ namespace SIIV.WebApp.Requirement
       object obj1 = objectList.Find((Predicate<object>) (x =>
       {
         // ISSUE: reference to a compiler-generated field
-        if (RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__2 == null)
+        if (RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__2 == null)
         {
           // ISSUE: reference to a compiler-generated field
-          RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__2 = CallSite<Func<CallSite, object, bool>>.Create(Binder.Convert(CSharpBinderFlags.None, typeof (bool), typeof (RegisterRequirement)));
+          RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__2 = CallSite<Func<CallSite, object, bool>>.Create(Binder.Convert(CSharpBinderFlags.None, typeof (bool), typeof (RegisterRequirement)));
         }
         // ISSUE: reference to a compiler-generated field
-        Func<CallSite, object, bool> target1 = RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__2.Target;
+        Func<CallSite, object, bool> target1 = RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__2.Target;
         // ISSUE: reference to a compiler-generated field
-        CallSite<Func<CallSite, object, bool>> p2 = RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__2;
+        CallSite<Func<CallSite, object, bool>> p2 = RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__2;
         // ISSUE: reference to a compiler-generated field
-        if (RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__1 == null)
+        if (RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__1 == null)
         {
           // ISSUE: reference to a compiler-generated field
-          RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__1 = CallSite<Func<CallSite, object, int, object>>.Create(Binder.BinaryOperation(CSharpBinderFlags.None, System.Linq.Expressions.ExpressionType.Equal, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[2]
+          RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__1 = CallSite<Func<CallSite, object, int, object>>.Create(Binder.BinaryOperation(CSharpBinderFlags.None, System.Linq.Expressions.ExpressionType.Equal, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[2]
           {
             CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null),
             CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.UseCompileTimeType, (string) null)
           }));
         }
         // ISSUE: reference to a compiler-generated field
-        Func<CallSite, object, int, object> target2 = RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__1.Target;
+        Func<CallSite, object, int, object> target2 = RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__1.Target;
         // ISSUE: reference to a compiler-generated field
-        CallSite<Func<CallSite, object, int, object>> p1 = RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__1;
+        CallSite<Func<CallSite, object, int, object>> p1 = RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__1;
         // ISSUE: reference to a compiler-generated field
-        if (RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__0 == null)
+        if (RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__0 == null)
         {
           // ISSUE: reference to a compiler-generated field
-          RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__0 = CallSite<Func<CallSite, object, object>>.Create(Binder.GetMember(CSharpBinderFlags.None, "i_ParameterId", typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
+          RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__0 = CallSite<Func<CallSite, object, object>>.Create(Binder.GetMember(CSharpBinderFlags.None, "i_ParameterId", typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
           {
             CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null)
           }));
         }
         // ISSUE: reference to a compiler-generated field
         // ISSUE: reference to a compiler-generated field
-        object obj2 = RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__0.Target((CallSite) RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__0, x);
+        object obj2 = RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__0.Target((CallSite) RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__0, x);
         int iSystemUserId = this.objUserBE.i_SystemUserId;
         object obj3 = target2((CallSite) p1, obj2, iSystemUserId);
         return target1((CallSite) p2, obj3);
       }));
       // ISSUE: reference to a compiler-generated field
-      if (RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__4 == null)
+      if (RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__4 == null)
       {
         // ISSUE: reference to a compiler-generated field
-        RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__4 = CallSite<Func<CallSite, object, bool>>.Create(Binder.UnaryOperation(CSharpBinderFlags.None, System.Linq.Expressions.ExpressionType.IsTrue, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
+        RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__4 = CallSite<Func<CallSite, object, bool>>.Create(Binder.UnaryOperation(CSharpBinderFlags.None, System.Linq.Expressions.ExpressionType.IsTrue, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[1]
         {
           CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null)
         }));
       }
       // ISSUE: reference to a compiler-generated field
-      Func<CallSite, object, bool> target = RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__4.Target;
+      Func<CallSite, object, bool> target = RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__4.Target;
       // ISSUE: reference to a compiler-generated field
-      CallSite<Func<CallSite, object, bool>> p4 = RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__4;
+      CallSite<Func<CallSite, object, bool>> p4 = RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__4;
       // ISSUE: reference to a compiler-generated field
-      if (RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__3 == null)
+      if (RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__3 == null)
       {
         // ISSUE: reference to a compiler-generated field
-        RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__3 = CallSite<Func<CallSite, object, object, object>>.Create(Binder.BinaryOperation(CSharpBinderFlags.None, System.Linq.Expressions.ExpressionType.NotEqual, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[2]
+        RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__3 = CallSite<Func<CallSite, object, object, object>>.Create(Binder.BinaryOperation(CSharpBinderFlags.None, System.Linq.Expressions.ExpressionType.NotEqual, typeof (RegisterRequirement), (IEnumerable<CSharpArgumentInfo>) new CSharpArgumentInfo[2]
         {
           CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.None, (string) null),
           CSharpArgumentInfo.Create(CSharpArgumentInfoFlags.Constant, (string) null)
@@ -4043,7 +4044,7 @@ namespace SIIV.WebApp.Requirement
       }
       // ISSUE: reference to a compiler-generated field
       // ISSUE: reference to a compiler-generated field
-      object obj4 = RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__3.Target((CallSite) RegisterRequirement.\u003C\u003Eo__106.\u003C\u003Ep__3, obj1, (object) null);
+      object obj4 = RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__3.Target((CallSite) RegisterRequirement.\u003C\u003Eo__108.\u003C\u003Ep__3, obj1, (object) null);
       return target((CallSite) p4, obj4);
     }
 

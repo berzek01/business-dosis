@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.Requirement.DA.DataBankManagementDA
 // Assembly: SIIV.Requirement.DA, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 3193B483-1C99-47A3-B806-34369171C902
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.Requirement.DA.dll
+// MVID: 4532E3C2-7D38-4E0C-8CE9-E0E8FA4FAED3
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.Requirement.DA.dll
 
 using Microsoft.Practices.EnterpriseLibrary.Common.Configuration;
 using Microsoft.Practices.EnterpriseLibrary.Data;

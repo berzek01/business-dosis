@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.WebApp.Delivery.SuccessfulRegistrationDelivery
 // Assembly: SIIV.WebApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 7AA326CF-267A-4A0D-8292-415B064D285A
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.WebApp.dll
+// MVID: 0F87038C-530E-41EF-B2A6-8BD0592819DD
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.WebApp.dll
 
 using AjaxControlToolkit;
 using BarcodeLib;
@@ -45,6 +45,7 @@ namespace SIIV.WebApp.Delivery
     protected HtmlGenericControl DiasPagoVisa;
     protected Label lblDias;
     protected HtmlGenericControl trDelivery;
+    protected Label lblDuplicateMsg;
     protected Button Button1;
     protected Button Button2;
     protected Button btnSendMail;
@@ -69,8 +70,9 @@ namespace SIIV.WebApp.Delivery
         this.lblMessage.Text = string.Empty;
         DataTable dataTable = new DataTable();
         DataTable deliveryCur = new RequirementQueriesBL().GenerateDeliveryCUR(int32);
-        string str = deliveryCur.Rows[0]["i_PlateTypeId"].ToString();
+        string str1 = deliveryCur.Rows[0]["i_PlateTypeId"].ToString();
         deliveryCur.Rows[0]["i_ProcessTypeId"].ToString();
+        string str2 = deliveryCur.Rows[0]["i_RequirementProcessTypeId"].ToString();
         double num = Math.Round(deliveryCur.Rows[0]["f_PriceTotal"].ToString() != "" ? Convert.ToDouble(deliveryCur.Rows[0]["f_PriceTotal"]) : 0.0, 2);
         if (Convert.ToInt32(this.Session["VisaPagoConforme"]) == 1)
         {
@@ -91,10 +93,12 @@ namespace SIIV.WebApp.Delivery
           this.DiasPagoVisa.Visible = true;
         }
         this.lblPrice.Text = "S/ " + num.ToString("0.00");
-        if (str == "12")
+        if (str1 == "12")
         {
           this.trDelivery.Visible = true;
           this.lblDias.Text = " 1 día ";
+          if (str2 == "1")
+            this.lblDuplicateMsg.Visible = true;
         }
         if (this.lblPaymentCode.Text.Trim() == "")
           this.trPaymentCode.Visible = false;

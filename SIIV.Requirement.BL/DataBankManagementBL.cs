@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.Requirement.BL.DataBankManagementBL
 // Assembly: SIIV.Requirement.BL, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 6CDA977C-9E81-4503-829A-9DEDC12E0F36
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.Requirement.BL.dll
+// MVID: FE9A2D44-C606-41EA-8453-9569E774C3D1
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.Requirement.BL.dll
 
 using SIIV.Requirement.DA;
 

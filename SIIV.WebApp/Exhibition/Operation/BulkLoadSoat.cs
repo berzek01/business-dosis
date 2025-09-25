@@ -1,8 +1,8 @@
 ﻿// Decompiled with JetBrains decompiler
 // Type: SIIV.WebApp.Exhibition.Operation.BulkLoadSoat
 // Assembly: SIIV.WebApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-// MVID: 7AA326CF-267A-4A0D-8292-415B064D285A
-// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.WebApp.dll
+// MVID: 0F87038C-530E-41EF-B2A6-8BD0592819DD
+// Assembly location: C:\Users\Cristofer\Downloads\20250923\Archivos\SIIV.WebApp.dll
 
 using SIIV.BE;
 using SIIV.BE.CustomCode;
@@ -107,7 +107,7 @@ namespace SIIV.WebApp.Exhibition.Operation
             dtDatos.Columns.Add("Aseguradora", Type.GetType("System.String"));
             if (dtDatos == null)
               return;
-            DataTable dataTable2 = (DataTable) this.ViewState["dtResult"];//lista de aseguraforas
+            DataTable dataTable2 = (DataTable) this.ViewState["dtResult"];
             for (int index1 = 0; index1 < dtDatos.Rows.Count; ++index1)
             {
               for (int index2 = 0; index2 < dataTable2.Rows.Count; ++index2)
