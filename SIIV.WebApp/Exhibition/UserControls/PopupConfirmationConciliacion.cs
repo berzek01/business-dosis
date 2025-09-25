@@ -1,0 +1,43 @@
+﻿// Decompiled with JetBrains decompiler
+// Type: SIIV.WebApp.Exhibition.UserControls.PopupConfirmationConciliacion
+// Assembly: SIIV.WebApp, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: 7AA326CF-267A-4A0D-8292-415B064D285A
+// Assembly location: D:\SGPR\BK-Placas\Placas\bin\SIIV.WebApp.dll
+
+using System;
+using System.Globalization;
+using System.Web.UI;
+using System.Web.UI.HtmlControls;
+using System.Web.UI.WebControls;
+
+#nullable disable
+namespace SIIV.WebApp.Exhibition.UserControls
+{
+  public class PopupConfirmationConciliacion : Page
+  {
+    public int I_Typemaintainer;
+    public string strfnscript;
+    protected HtmlForm form1;
+    protected System.Web.UI.ScriptManager ScriptManager1;
+    protected UpdatePanel UpdatePanel1;
+    protected Image img;
+    protected Label lblMensaje;
+    protected Button btnYes;
+
+    protected void Page_Load(object sender, EventArgs e)
+    {
+      int int32 = Convert.ToInt32(this.Request.QueryString["MessageTypeId"], (IFormatProvider) CultureInfo.CurrentCulture);
+      this.lblMensaje.Text = Convert.ToString(this.Request.QueryString["MessageText"], (IFormatProvider) CultureInfo.CurrentCulture).Replace("B¡", "<b>").Replace("B!", "</b>");
+      if (int32 == 1)
+        this.img.ImageUrl = "~/Images/Design/Buttons/Actions/WarningPopup.png";
+      else
+        this.img.ImageUrl = "~/Images/Design/Buttons/Actions/InformationPopup.png";
+    }
+
+    protected void Yes_Click(object sender, EventArgs e)
+    {
+      this.strfnscript = "SendInfoPopup();";
+      System.Web.UI.ScriptManager.RegisterStartupScript((Control) this.UpdatePanel1, this.UpdatePanel1.GetType(), "Script", this.strfnscript, true);
+    }
+  }
+}

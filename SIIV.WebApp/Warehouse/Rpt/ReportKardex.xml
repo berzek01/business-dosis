@@ -1,0 +1,55 @@
+<?xml version="1.0" standalone="yes"?>
+<xs:schema id="NewDataSet" xmlns="" xmlns:xs="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+  <xs:element name="NewDataSet" msdata:IsDataSet="true" msdata:MainDataTable="Tabla" msdata:UseCurrentLocale="true">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="Tabla">
+          <xs:complexType>
+            <xs:sequence>
+              <xs:element name="Insert_date" msdata:ReadOnly="true" type="xs:dateTime" minOccurs="0" />
+              <xs:element name="DocumentTypeName" msdata:ReadOnly="true">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="v_DocumentNumber" msdata:ReadOnly="true">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="20" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="MovementTypeName" msdata:ReadOnly="true">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="idproducto" type="xs:int" minOccurs="0" />
+              <xs:element name="ProductName" minOccurs="0">
+                <xs:simpleType>
+                  <xs:restriction base="xs:string">
+                    <xs:maxLength value="100" />
+                  </xs:restriction>
+                </xs:simpleType>
+              </xs:element>
+              <xs:element name="E_Cantidad" type="xs:int" minOccurs="0" />
+              <xs:element name="E_Precio" type="xs:double" minOccurs="0" />
+              <xs:element name="E_Valor" type="xs:double" minOccurs="0" />
+              <xs:element name="S_Cantidad" msdata:ReadOnly="true" type="xs:int" minOccurs="0" />
+              <xs:element name="S_Precio" type="xs:double" minOccurs="0" />
+              <xs:element name="S_Valor" type="xs:double" minOccurs="0" />
+              <xs:element name="SAL_Cantidad" type="xs:int" minOccurs="0" />
+              <xs:element name="SAL_Precio" type="xs:double" minOccurs="0" />
+              <xs:element name="SAL_Valor" type="xs:double" minOccurs="0" />
+              <xs:element name="orden" type="xs:int" minOccurs="0" />
+            </xs:sequence>
+          </xs:complexType>
+        </xs:element>
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+</xs:schema>
